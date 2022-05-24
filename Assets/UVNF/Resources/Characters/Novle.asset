@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8125834245936952161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
+  m_Name: Mouth
+  m_EditorClassIdentifier: 
+  _partName: Mouth
+  _poseNames:
+  - Excited
+  _poseSprites:
+  - {fileID: 21300000, guid: 852bab88dbb93cf4193e7a33093a53e4, type: 3}
+  _spriteRect:
+    serializedVersion: 2
+    x: 443
+    y: 339
+    width: 158
+    height: 140
+  IsVisible: 1
+  SpriteToShow: 0
+--- !u!114 &-6799954388658627493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c31c79bd6389fe4ca379ca54fa4fd05, type: 3}
+  m_Name: Excited
+  m_EditorClassIdentifier: 
+  _poseName: Excited
+  _poseSprite: {fileID: 21300000, guid: 909bd0f6426e2d843bcb6e755a9888d6, type: 3}
+  _characterParts:
+  - {fileID: 1057812628004250672}
+  - {fileID: -8125834245936952161}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4023533ec6fabf24b954dbf6edbf2679, type: 3}
+  m_Name: Novle
+  m_EditorClassIdentifier: 
+  _characterName: Novle
+  _poses:
+  - {fileID: -6799954388658627493}
+  PrecompiledCharacter: {fileID: 0}
+--- !u!114 &1057812628004250672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
+  m_Name: Eyes
+  m_EditorClassIdentifier: 
+  _partName: Eyes
+  _poseNames:
+  - Excited
+  _poseSprites:
+  - {fileID: 21300000, guid: c1637d92f0ff3bb429984f3c22ae1730, type: 3}
+  _spriteRect:
+    serializedVersion: 2
+    x: 416
+    y: 247
+    width: 243
+    height: 115
+  IsVisible: 1
+  SpriteToShow: 0
