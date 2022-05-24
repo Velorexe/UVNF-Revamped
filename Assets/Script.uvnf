@@ -1,4 +1,4 @@
-@char name:Velorexe emotion:Happy x_position:0 y_position:1 x_scale:1 y_scale:1
+@char name:Novle emotion:Happy x_position:0 y_position:500 x_scale:1 y_scale:1
 !comment info:This is edited through Visual Studio!
-@move name:Velorexe position:0
+@move name:Novle position:0
 #chapter title:New Chapter

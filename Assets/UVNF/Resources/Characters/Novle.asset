@@ -19,10 +19,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 852bab88dbb93cf4193e7a33093a53e4, type: 3}
   _spriteRect:
     serializedVersion: 2
-    x: 457
-    y: 355
-    width: 153
-    height: 116
+    x: -19.999985
+    y: 1319.3333
+    width: 150
+    height: 120
   IsVisible: 1
   SpriteToShow: 0
 --- !u!114 &-6799954388658627493
@@ -57,7 +57,8 @@ MonoBehaviour:
   _characterName: Novle
   _poses:
   - {fileID: -6799954388658627493}
-  PrecompiledCharacter: {fileID: 0}
+  PrecompiledCharacter: {fileID: 4534015410474157720, guid: 7e4de85c996000e47bee788d7c0c8c54,
+    type: 3}
 --- !u!114 &1057812628004250672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,9 +78,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c1637d92f0ff3bb429984f3c22ae1730, type: 3}
   _spriteRect:
     serializedVersion: 2
-    x: 421
-    y: 258
-    width: 230
-    height: 113
+    x: -14
+    y: 1413
+    width: 222
+    height: 100
   IsVisible: 1
   SpriteToShow: 0

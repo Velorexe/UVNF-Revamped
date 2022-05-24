@@ -27,11 +27,7 @@ namespace UVNF.Core.Entities.Characters
         public Rect SpriteRect
         {
             get { return _spriteRect; }
-            private set
-            {
-                if (value.x >= 0 && value.y >= 0 && value.width > 1 && value.height > 1)
-                    _spriteRect = value;
-            }
+            private set { _spriteRect = value; }
         }
         [SerializeField]
         private Rect _spriteRect = new Rect(0f, 0f, 100f, 100f);

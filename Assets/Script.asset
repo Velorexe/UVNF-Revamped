@@ -23,9 +23,9 @@ MonoBehaviour:
     00000000:
       type: {class: CharacterScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
       data:
-        _characterName: Velorexe
+        _characterName: Novle
         _characterEmotion: 0
-        _positionX: 0
+        _positionX: 5.78
         _positionY: 1
         _scaleX: 1
         _scaleY: 1
@@ -36,7 +36,7 @@ MonoBehaviour:
     00000002:
       type: {class: MoveCharacterScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
       data:
-        _characterName: Velorexe
+        _characterName: Novle
         _position: 0
     00000003:
       type: {class: ChapterScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}

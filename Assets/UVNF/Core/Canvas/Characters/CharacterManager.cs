@@ -55,8 +55,8 @@ namespace UVNF.Core.Canvas
                 if (character.OriginalCharacter.Poses.Length == 0)
                     Debug.LogWarning("Character does not contain any poses.");
                 
-                RectTransform transform = (RectTransform)Instantiate(character.gameObject, _characterCanvas).transform;
-                transform.anchoredPosition = new Vector2(position.x * _canvasSize.x, position.y * _canvasSize.y);
+                RectTransform transform = Instantiate(character.gameObject, _characterCanvas).GetComponent<RectTransform>();
+                transform.position = new Vector2(position.x * _canvasSize.x - (_canvasSize.x / 2f), position.y * _canvasSize.y - (_canvasSize.y / 2f));
                 
                 Vector3 cS = transform.localScale;
                 transform.localScale = new Vector3(scale.x * cS.x, scale.y * cS.y, cS.z);

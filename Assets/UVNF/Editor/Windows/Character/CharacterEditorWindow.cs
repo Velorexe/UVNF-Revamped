@@ -213,7 +213,7 @@ namespace UVNF.Editor.Windows
 
         private void CompileCharacter(Character character)
         {
-            GameObject newCharacter = new GameObject(character.CharacterName);
+            GameObject newCharacter = new GameObject(character.CharacterName, typeof(RectTransform));
             OnScreenCharacter onScreenCharacter = newCharacter.AddComponent<OnScreenCharacter>();
 
             onScreenCharacter.Compile(character);

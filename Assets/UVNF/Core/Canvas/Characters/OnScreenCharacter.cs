@@ -36,7 +36,12 @@ namespace UVNF.Core.Canvas
                 RectTransform transform = childPose.GetComponent<RectTransform>();
                 transform.sizeDelta = new Vector2(pose.PoseSprite.texture.width, pose.PoseSprite.texture.height);
 
-                foreach(CharacterPart part in pose.CharacterParts)
+                transform.anchorMin = new Vector2(0.5f, 0f);
+                transform.anchorMax = new Vector2(0.5f, 0f);
+
+                transform.position = new Vector2(0f, pose.PoseSprite.texture.height / 2f);
+
+                foreach (CharacterPart part in pose.CharacterParts)
                 {
                     GameObject childPart = new GameObject(part.PartName, typeof(RectTransform));
                     childPart.transform.SetParent(childPose.transform);
@@ -44,7 +49,12 @@ namespace UVNF.Core.Canvas
                     RectTransform childTransform = childPart.GetComponent<RectTransform>();
                     childTransform.position = new Vector2(-pose.PoseSprite.texture.width / 2f, pose.PoseSprite.texture.height / 2f);
 
-                    for(int i = 0; i < part.PoseSprites.Count; i++)
+                    childTransform.anchorMin = new Vector2(0.5f, 0f);
+                    childTransform.anchorMax = new Vector2(0.5f, 0f);
+
+                    childTransform.position = new Vector2(0f, 0f);
+
+                    for (int i = 0; i < part.PoseSprites.Count; i++)
                     {
                         GameObject childPartSprite = new GameObject(part.PoseNames[i], typeof(RectTransform));
                         childPartSprite.transform.SetParent(childPart.transform);
@@ -55,10 +65,11 @@ namespace UVNF.Core.Canvas
                         RectTransform partTransform = childPartSprite.GetComponent<RectTransform>();
                         partTransform.sizeDelta = new Vector2(part.SpriteRect.width, part.SpriteRect.height);
 
-                        // Top left is 0,0
-                        partTransform.localPosition = new Vector2(
-                            part.SpriteRect.x + part.SpriteRect.width / 2f,
-                            -part.SpriteRect.y - part.SpriteRect.height / 2f);
+                        partTransform.anchorMin = new Vector2(0.5f, 0f);
+                        partTransform.anchorMax = new Vector2(0.5f, 0f);
+
+                        // Bottom middle is 0,0
+                        partTransform.localPosition = new Vector2(part.SpriteRect.x, part.SpriteRect.y);
                     }
                 }
             }

@@ -37,6 +37,8 @@ namespace UVNF.Editor.Windows
 
         private bool _gizmosVisible = true;
 
+        private Vector2 _anchorOffset = new Vector2();
+
         public void Init(CharacterPose focusedCharacter)
         {
             CharacterPartEditorWindow window = GetWindow<CharacterPartEditorWindow>();
@@ -94,6 +96,7 @@ namespace UVNF.Editor.Windows
             #region Character Display
             if (_focusedPose.PoseSprite != null)
             {
+                _anchorOffset = new Vector2(_focusedPose.PoseSprite.texture.width / 2f, 0f);
                 Rect drawRect = _focusedPose.PoseSprite.rect;
 
                 drawRect.x += 200f;
@@ -117,11 +120,20 @@ namespace UVNF.Editor.Windows
                         {
                             Rect partRect = part.SpriteRect;
 
-                            partRect.x *= _zoomAmount;
-                            partRect.y *= _zoomAmount;
+                            Vector2 fixedPosition = partRect.position + _anchorOffset;
 
-                            partRect.x += drawRect.x;
-                            partRect.y += drawRect.y;
+                            fixedPosition.y = _focusedPose.PoseSprite.texture.height - fixedPosition.y;
+
+                            fixedPosition.x *= _zoomAmount;
+                            fixedPosition.y *= _zoomAmount;
+
+                            fixedPosition.x += drawRect.x;
+                            fixedPosition.y += drawRect.y;
+
+                            fixedPosition.x -= part.SpriteRect.width / 2f;
+                            fixedPosition.y -= part.SpriteRect.height / 2f;
+
+                            partRect.position = fixedPosition;
 
                             partRect.width *= _zoomAmount;
                             partRect.height *= _zoomAmount;
@@ -159,7 +171,7 @@ namespace UVNF.Editor.Windows
                                     Rect newPosition = part.SpriteRect;
 
                                     newPosition.x += (Event.current.mousePosition - _partDragPoint).x / _zoomAmount;
-                                    newPosition.y += (Event.current.mousePosition - _partDragPoint).y / _zoomAmount;
+                                    newPosition.y -= (Event.current.mousePosition - _partDragPoint).y / _zoomAmount;
 
                                     part.SetSpriteRect(newPosition);
 
