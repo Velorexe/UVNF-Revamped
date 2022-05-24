@@ -38,8 +38,11 @@ namespace UVNF.Core.Canvas
 
                 foreach(CharacterPart part in pose.CharacterParts)
                 {
-                    GameObject childPart = new GameObject(part.PartName);
-                    childPart.transform.parent = childPose.transform;
+                    GameObject childPart = new GameObject(part.PartName, typeof(RectTransform));
+                    childPart.transform.SetParent(childPose.transform);
+
+                    RectTransform childTransform = childPart.GetComponent<RectTransform>();
+                    childTransform.position = new Vector2(-pose.PoseSprite.texture.width / 2f, pose.PoseSprite.texture.height / 2f);
 
                     for(int i = 0; i < part.PoseSprites.Count; i++)
                     {
@@ -52,7 +55,10 @@ namespace UVNF.Core.Canvas
                         RectTransform partTransform = childPartSprite.GetComponent<RectTransform>();
                         partTransform.sizeDelta = new Vector2(part.SpriteRect.width, part.SpriteRect.height);
 
-                        partTransform.localPosition = part.SpriteRect.position;
+                        // Top left is 0,0
+                        partTransform.localPosition = new Vector2(
+                            part.SpriteRect.x + part.SpriteRect.width / 2f,
+                            -part.SpriteRect.y - part.SpriteRect.height / 2f);
                     }
                 }
             }

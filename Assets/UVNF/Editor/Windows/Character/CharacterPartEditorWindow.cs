@@ -18,15 +18,15 @@ namespace UVNF.Editor.Windows
         private float _zoomAmount = 1f;
         private Vector2 _imageOffset = new Vector2();
 
-        //Dragging the canvas
+        // Dragging the canvas
         private bool _canvasIsDragging = false;
         private Vector2 _canvasDragPoint = new Vector2();
 
-        //Dragging individual part
+        // Dragging individual part
         private bool _partIsDragging = false;
         private Vector2 _partDragPoint = new Vector2();
 
-        //Dragging resize handle
+        // Dragging resize handle
         private bool _resizeIsDragging = false;
         private Vector2 _resizeDragPoint = new Vector2();
 
@@ -126,7 +126,7 @@ namespace UVNF.Editor.Windows
                             partRect.width *= _zoomAmount;
                             partRect.height *= _zoomAmount;
 
-                            GUI.DrawTexture(partRect, part.PoseSprites[_selectedSprite].texture, ScaleMode.ScaleToFit);
+                            GUI.DrawTexture(partRect, part.PoseSprites[_selectedSprite].texture, ScaleMode.StretchToFill);
 
                             #region Part Moving & Resizing
                             if (_focusedCharacterPart != -1 && part == _focusedPose.CharacterParts[_focusedCharacterPart] && _gizmosVisible)
@@ -403,12 +403,15 @@ namespace UVNF.Editor.Windows
             //Upper
             Rect boundRect = new Rect(bounds.x, bounds.y, bounds.width, width);
             EditorGUI.DrawRect(boundRect, color);
+
             //Right
             boundRect = new Rect(bounds.width + bounds.x, bounds.y, width, bounds.height);
             EditorGUI.DrawRect(boundRect, color);
+
             //Bottom
             boundRect = new Rect(bounds.x, bounds.height + bounds.y, bounds.width, width);
             EditorGUI.DrawRect(boundRect, color);
+
             //Left
             boundRect = new Rect(bounds.x, bounds.y, width, bounds.height);
             EditorGUI.DrawRect(boundRect, color);
