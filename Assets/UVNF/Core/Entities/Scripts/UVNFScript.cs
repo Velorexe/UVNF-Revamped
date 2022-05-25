@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UVNF.Core.Entities.Factories;
 using System.Text;
+using System.Globalization;
 
 namespace UVNF.Core.Entities
 {
@@ -109,10 +110,17 @@ namespace UVNF.Core.Entities
         /// <returns>A string compiled from the UVNFScriptLines</returns>
         public string ToDocument(bool includeComments = true)
         {
+            CultureInfo ci = CultureInfo.CurrentCulture;
+
+            CultureInfo.CurrentCulture = (CultureInfo)ci.Clone();
+            CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator = ".";
+
             StringBuilder builder = new StringBuilder();
 
             foreach (UVNFScriptLine t in _lines)
                 builder.AppendLine(t.ToCommandString());
+
+            CultureInfo.CurrentCulture = ci;
 
             return builder.ToString();
         }

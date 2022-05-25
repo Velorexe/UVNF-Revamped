@@ -1,17 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-
+﻿using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
 using UVNF.Core.Entities;
-using UVNF.Core.Entities.Factories;
 using UVNF.Core.Entities.ScriptLines;
 using UVNF.Editor.Extensions;
-using System.Reflection;
-using System;
-using UVNF.Assembly;
 
 namespace UVNF.Editor.Importer
 {
@@ -154,8 +150,9 @@ namespace UVNF.Editor.Importer
                                                 }
 
                                                 // Add Hidden tag
-                                                if (Attribute.GetCustomAttribute(fields[j], typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute field)
-                                                //&& (!field.Hidden || (field.Hidden && fields[j].FieldType.IsValueType && fields[j].GetValue(_script.Lines[i]) != Activator.CreateInstance(fields[j].FieldType))))
+                                                if (Attribute.GetCustomAttribute(fields[j], typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute field
+                                                    && (!field.Optional || (field.Optional && !fields[j].GetValue(_script.Lines[i]).Equals(field.DefaultValue)) || _focusedLine == i))
+                                                
                                                 {
                                                     if (currentWidth + 5f > maxWidth)
                                                     {

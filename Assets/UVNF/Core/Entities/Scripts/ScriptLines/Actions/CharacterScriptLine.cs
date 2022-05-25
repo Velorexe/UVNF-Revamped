@@ -1,11 +1,11 @@
 ﻿using Cysharp.Threading.Tasks;
-using UnityEngine;
 using System.Threading;
+using UnityEngine;
 using UVNF.Core.Canvas;
 
 namespace UVNF.Core.Entities.ScriptLines
 {
-    [ScriptLineAlias("char", "character"), ColorTint(1f, 0f, 0f)]
+    [ScriptLineAlias("char"), ColorTint(1f, 0f, 0f)]
     public class CharacterScriptLine : UVNFScriptLine
     {
         public override char Literal => '@';
@@ -17,10 +17,6 @@ namespace UVNF.Core.Entities.ScriptLines
         [TextParameter("pose")]
         [SerializeField]
         private string _characterPose = string.Empty;
-
-        [EnumParameter("emotion", typeof(CharacterEmotion))]
-        [SerializeField]
-        private CharacterEmotion characterEmotion = CharacterEmotion.Happy;
 
         [Vector2Parameter("pos")]
         [SerializeField]
