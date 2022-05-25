@@ -24,11 +24,11 @@ MonoBehaviour:
       type: {class: CharacterScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
       data:
         _characterName: Novle
-        _characterEmotion: 0
-        _positionX: 0
-        _positionY: 0.25
-        _scaleX: 1
-        _scaleY: 1
+        _characterPose: Uninterested
+        _positionX: 0.5
+        _positionY: 0
+        _scaleX: 0
+        _scaleY: 0
     00000001:
       type: {class: CommentScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
       data:

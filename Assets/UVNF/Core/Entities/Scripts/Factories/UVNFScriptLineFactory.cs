@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UVNF.Assembly;
+﻿using System;
 using System.Reflection;
-using System;
+using UVNF.Assembly;
 using UVNF.Core.Entities.ScriptLines;
 
 namespace UVNF.Core.Entities.Factories
@@ -27,7 +24,8 @@ namespace UVNF.Core.Entities.Factories
             char literal = tag[0];
 
             //If the literal is a Comment
-            if (literal == ';') return null;
+            if (literal == ';')
+                return null;
             //Else the literal is most likely a Command
             else
             {
@@ -39,15 +37,22 @@ namespace UVNF.Core.Entities.Factories
                     if (literal == _scriptLineTypes[i].Literal)
                     {
                         ScriptLineAliasAttribute aliasAttribute = _scriptLineTypes[i].GetType().GetCustomAttribute<ScriptLineAliasAttribute>();
-                        string filteredLine = tag.Remove(0, alias.Length + 1);
+                        string filteredLine = tag.Remove(0, alias.Length + 2);
 
-                        //If the ScriptLine has the same alias
+                        // If the ScriptLine has the same alias
                         if ((alias != null && aliasAttribute.HasAlias(alias)) || (alias == null && _scriptLineTypes[i].GetType().Name.Replace("ScriptLine", "").ToLower() == alias))
                         {
+                            string defaultParameter = string.Empty;
+                            if (!filteredLine.Split(' ')[0].Contains(":"))
+                            {
+                                defaultParameter = filteredLine.Split(' ')[0].Trim();
+                                filteredLine = filteredLine.Substring(defaultParameter.Length);
+                            }
+
                             Tuple<string[], string[]> parameterAndValues = ParseParametersAndValues(filteredLine);
 
                             UVNFScriptLine scriptLine = Activator.CreateInstance(_scriptLineTypes[i].GetType()) as UVNFScriptLine;
-                            scriptLine.ProcessParameters(parameterAndValues.Item1, parameterAndValues.Item2);
+                            scriptLine.ProcessParameters(defaultParameter, parameterAndValues.Item1, parameterAndValues.Item2);
 
                             return scriptLine;
                         }
@@ -55,7 +60,7 @@ namespace UVNF.Core.Entities.Factories
                 }
             }
 
-            //Something went wrong, none of the characters are recognized
+            // Something went wrong, none of the characters are recognized
             return null;
         }
 
@@ -69,18 +74,19 @@ namespace UVNF.Core.Entities.Factories
             string[] splitLine = filteredLine.Split(':');
             Tuple<string[], string[]> result = new Tuple<string[], string[]>(new string[splitLine.Length - 1], new string[splitLine.Length - 1]);
 
-            //Go up to the amount of parameters
+            // Go up to the amount of parameters
             for (int i = 0; i < splitLine.Length - 1; i++)
             {
                 string[] splitParameter = splitLine[i].Split(' ');
 
-                //Set the parameter name
+                // Set the parameter name
                 result.Item1[i] = splitParameter[splitParameter.Length - 1];
-                
+
                 splitParameter = splitLine[i + 1].Split(' ');
                 result.Item2[i] = string.Join(" ", splitParameter, 0, (splitParameter.Length == 1 ? 1 : splitParameter.Length - 1));
 
-                if (i == splitLine.Length - 2) result.Item2[i] = string.Join(" ", splitParameter, 0, splitParameter.Length);
+                if (i == splitLine.Length - 2)
+                    result.Item2[i] = string.Join(" ", splitParameter, 0, splitParameter.Length);
             }
 
             return result;

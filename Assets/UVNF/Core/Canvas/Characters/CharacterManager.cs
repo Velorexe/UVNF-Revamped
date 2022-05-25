@@ -15,7 +15,7 @@ namespace UVNF.Core.Canvas
         private RectTransform _characterCanvas;
 
         private Vector2 _canvasSize;
-        
+
         private List<OnScreenCharacter> _activeCharacters = new List<OnScreenCharacter>();
 
         private IUniTaskAsyncEnumerable<OnScreenCharacter> _cachedCharacters;
@@ -32,7 +32,7 @@ namespace UVNF.Core.Canvas
 
                 int index = 0;
 
-                while(index < characters.Length)
+                while (index < characters.Length)
                 {
                     await writer.YieldAsync(characters[index]);
                     index++;
@@ -48,21 +48,23 @@ namespace UVNF.Core.Canvas
         /// <param name="characterName"></param>
         /// <param name="screenPositionPercentage"></param>
         /// <returns></returns>
-        public async UniTaskVoid AddCharacter(string characterName, Vector2 position, Vector2 scale)
+        public async UniTaskVoid AddCharacter(string characterName, string pose, Vector2 position, Vector2 scale)
         {
             OnScreenCharacter character = null;
             await _cachedCharacters.ForEachAsync(x => { if (x.Name == characterName) character = x; });
 
             if (character != null)
             {
-                if (character.OriginalCharacter.Poses.Length == 0)
+                if (character.Poses.Count == 0)
                     Debug.LogWarning("Character does not contain any poses.");
-                
+
                 RectTransform transform = Instantiate(character.gameObject, _characterCanvas).GetComponent<RectTransform>();
-                transform.localPosition = new Vector2(position.x * _canvasSize.x - (_canvasSize.x / 2f), position.y * _canvasSize.y - (_canvasSize.y / 2f));
-               
+                transform.localPosition = new Vector2(position.x * _canvasSize.x, position.y * _canvasSize.y);
+
                 Vector3 cS = transform.localScale;
                 transform.localScale = new Vector3(scale.x * cS.x, scale.y * cS.y, cS.z);
+
+                character.SwitchToPose(pose);
             }
         }
     }

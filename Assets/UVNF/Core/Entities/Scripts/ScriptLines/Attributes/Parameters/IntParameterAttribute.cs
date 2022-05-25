@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
+﻿using UnityEngine;
 using System;
 
 namespace UVNF.Core.Entities.ScriptLines
@@ -9,7 +6,9 @@ namespace UVNF.Core.Entities.ScriptLines
     [AttributeUsage(AttributeTargets.Field)]
     public class IntParameterAttribute : ScriptLineParameterAttribute
     {
-        public IntParameterAttribute(string label) : base(label) { }
+        public IntParameterAttribute(string label, bool optional = true) : base(label, optional) { }
+
+        public override object DefaultValue => default(int);
 
         public override object ParseParameterValue(string parameter)
         {

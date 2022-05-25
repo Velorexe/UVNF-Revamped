@@ -1,23 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using UnityEditor;
-using System;
 
 namespace UVNF.Core.Entities.ScriptLines
 {
-    [AttributeUsage(AttributeTargets.Field)]
     public class EnumParameterAttribute : ScriptLineParameterAttribute
     {
-        public EnumParameterAttribute(string label, Type enumType) : base(label)
+        public EnumParameterAttribute(string label, Type enumType, bool optional = true) : base(label, optional)
         {
             if (enumType.IsEnum)
                 EnumType = enumType;
             else
-                Debug.LogError("An Type that isn't an enum has been given to an EnumParameter");
+                Debug.LogError($"A Type that isn't an enum has been given to an EnumParameter with label '{label}'.");
         }
 
         public readonly Type EnumType;
+
+        public override object DefaultValue => Activator.CreateInstance(EnumType);
 
         public override object ParseParameterValue(string parameter)
         {

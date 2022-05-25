@@ -42,10 +42,10 @@ namespace UVNF.Editor.Importer
         private string[] _stringLines = new string[0];
         private string _suggestAppend = string.Empty;
 
-
         public override void OnInspectorGUI()
         {
-            if (_uvnfSkin == null) _uvnfSkin = EditorGUIUtility.Load("Assets/UVNF/Editor/GUISKIN/UVNFSkin.guiskin") as GUISkin;
+            if (_uvnfSkin == null)
+                _uvnfSkin = EditorGUIUtility.Load("Assets/UVNF/Editor/GUISKIN/UVNFSkin.guiskin") as GUISkin;
 
             if (Event.current.type == EventType.MouseDrag)
                 Repaint();
@@ -145,7 +145,17 @@ namespace UVNF.Editor.Importer
                                             FieldInfo[] fields = _script.Lines[i].GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                                             for (int j = 0; j < fields.Length; j++)
                                             {
+                                                if (fields[j].FieldType.IsValueType)
+                                                {
+                                                    var test = Activator.CreateInstance(fields[j].FieldType);
+                                                    var test2 = fields[j].GetValue(_script.Lines[i]);
+
+                                                    bool test3 = test != test2;
+                                                }
+
+                                                // Add Hidden tag
                                                 if (Attribute.GetCustomAttribute(fields[j], typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute field)
+                                                //&& (!field.Hidden || (field.Hidden && fields[j].FieldType.IsValueType && fields[j].GetValue(_script.Lines[i]) != Activator.CreateInstance(fields[j].FieldType))))
                                                 {
                                                     if (currentWidth + 5f > maxWidth)
                                                     {
@@ -169,7 +179,8 @@ namespace UVNF.Editor.Importer
 
                                                     float typeSpace = fields[j].FieldType.IsValueType ? 30f : 15f;
 
-                                                    Vector2 propertySize = _uvnfSkin.label.CalcSize(new GUIContent(fields[j].GetValue(_script.Lines[i]).ToString()));
+                                                    Vector2 propertySize = _uvnfSkin.label.CalcSize(
+                                                        new GUIContent(field.ValueToString(fields[j].GetValue(_script.Lines[i]))));
                                                     Vector2 labelSize = _uvnfSkin.label.CalcSize(new GUIContent(label));
 
                                                     float expectedWidth = currentWidth + propertySize.x + labelSize.x + typeSpace;
@@ -356,7 +367,8 @@ namespace UVNF.Editor.Importer
 
         private Texture2D GUIColorTexture(Color color)
         {
-            if (_guiSkinBuffer == null) _guiSkinBuffer = new Texture2D(1, 1);
+            if (_guiSkinBuffer == null)
+                _guiSkinBuffer = new Texture2D(1, 1);
 
             _guiSkinBuffer.SetPixel(0, 0, color);
             _guiSkinBuffer.Apply();

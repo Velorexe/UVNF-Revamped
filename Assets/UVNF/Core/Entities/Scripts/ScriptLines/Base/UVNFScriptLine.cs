@@ -4,6 +4,7 @@ using UVNF.Core.Entities.ScriptLines;
 using System.Reflection;
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace UVNF.Core.Entities
 {
@@ -22,17 +23,26 @@ namespace UVNF.Core.Entities
         /// </summary>
         /// <param name="parameters"></param>
         /// <param name="values"></param>
-        public void ProcessParameters(string[] parameters, string[] values)
+        public void ProcessParameters(string defaultParameter, string[] parameters, string[] values)
         {
             FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            foreach (string parameter in parameters)
+
+            FieldInfo defaultField = null;
+            ScriptLineParameterAttribute defaultAttribute = null;
+
+            foreach (string parameter in parameters.Append(defaultParameter))
             {
                 foreach (FieldInfo t in fields)
                 {
-                    if (Attribute.GetCustomAttribute(t, typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute attribute && attribute.Label == parameter)
+                    if (Attribute.GetCustomAttribute(t, typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute attribute)
                     {
-                        t.SetValue(this, attribute.ParseParameterValue(values[Array.IndexOf(parameters, parameter)]));
-                        break;
+                        if (attribute.Label == parameter)
+                        {
+                            t.SetValue(this, attribute.ParseParameterValue(values[Array.IndexOf(parameters, parameter)]));
+                            break;
+                        }
+                        else if (!attribute.Optional)
+                            t.SetValue(this, attribute.ParseParameterValue(defaultParameter));
                     }
                 }
             }
@@ -52,10 +62,13 @@ namespace UVNF.Core.Entities
             FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (FieldInfo t in fields)
             {
-                if (Attribute.GetCustomAttribute(t, typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute attribute && !string.IsNullOrEmpty(t.GetValue(this).ToString()))
+                var test = t.GetValue(this);
+                if (Attribute.GetCustomAttribute(t, typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute attribute
+                    && !string.IsNullOrEmpty(t.GetValue(this).ToString())
+                    && !(t.GetValue(this).Equals(attribute.DefaultValue)))
                 {
-                    builder.Append(" " + attribute.Label + ":");
-                    builder.Append(t.GetValue(this));
+                    builder.Append(" " + (attribute.Optional ? attribute.Label + ":" : ""));
+                    builder.Append(attribute.ValueToString(t.GetValue(this)));
                 }
             }
 

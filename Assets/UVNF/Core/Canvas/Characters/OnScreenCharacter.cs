@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UVNF.Core.Canvas
 {
-    public class OnScreenCharacter : MonoBehaviour
+    public class OnScreenCharacter : MonoBehaviour, ISerializationCallbackReceiver
     {
         public string Name
         {
@@ -15,17 +15,68 @@ namespace UVNF.Core.Canvas
         [SerializeField]
         private string _name;
 
-        public Character OriginalCharacter;
+        public Dictionary<string, RectTransform> Poses
+        {
+            get { return _poses; }
+        }
+        [SerializeField]
+        private Dictionary<string, RectTransform> _poses = new Dictionary<string, RectTransform>();
+
+        [SerializeField]
+        private List<string> _poseKeys = new List<string>();
+        [SerializeField]
+        private List<RectTransform> _poseValues = new List<RectTransform>();
+
+        [SerializeField, HideInInspector]
+        private string _defaultPose = string.Empty;
+        [SerializeField, HideInInspector]
+        private string _currentPose = string.Empty;
+
+        public void OnBeforeSerialize()
+        {
+            _poseKeys.Clear();
+            _poseValues.Clear();
+
+            foreach(KeyValuePair<string, RectTransform> valuePair in _poses)
+            {
+                _poseKeys.Add(valuePair.Key);
+                _poseValues.Add(valuePair.Value);
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            _poses = new Dictionary<string, RectTransform>();
+
+            for (int i = 0; i < Mathf.Min(_poseKeys.Count, _poseValues.Count); i++)
+                _poses.Add(_poseKeys[i], _poseValues[i]);
+        }
+
+        public void SwitchToPose(string newPose)
+        {
+            if (!newPose.Equals(_currentPose))
+            {
+                _poses[_currentPose].gameObject.SetActive(false);
+                _currentPose = newPose;
+
+                _poses[_currentPose].gameObject.SetActive(true);
+            }
+            else if (string.IsNullOrEmpty(newPose))
+            {
+                Debug.LogWarning("Got an empty pose, picking default (first).");
+
+                _poses[_currentPose].gameObject.SetActive(false);
+                _poses[_defaultPose].gameObject.SetActive(true);
+            }
+        }
 
 #if UNITY_EDITOR
         public void Compile(Character character)
         {
-            OriginalCharacter = character;
             _name = character.CharacterName;
+            this.name = _name;
 
-            name = _name;
-
-            foreach(CharacterPose pose in OriginalCharacter.Poses)
+            foreach(CharacterPose pose in character.Poses)
             {
                 GameObject childPose = new GameObject(pose.PoseName, typeof(RectTransform));
                 childPose.transform.SetParent(this.transform);
@@ -40,6 +91,8 @@ namespace UVNF.Core.Canvas
                 transform.anchorMax = new Vector2(0.5f, 0f);
 
                 transform.position = new Vector2(0f, pose.PoseSprite.texture.height / 2f);
+
+                _poses.Add(pose.PoseName, transform);
 
                 foreach (CharacterPart part in pose.CharacterParts)
                 {
@@ -72,6 +125,16 @@ namespace UVNF.Core.Canvas
                         partTransform.localPosition = new Vector2(part.SpriteRect.x, part.SpriteRect.y);
                     }
                 }
+
+                transform.gameObject.SetActive(false);
+            }
+
+            if (character.Poses.Length > 0)
+            {
+                _currentPose = character.Poses[0].PoseName;
+                _defaultPose = _currentPose;
+
+                _poses[_currentPose].gameObject.SetActive(true);
             }
         }
 #endif

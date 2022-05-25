@@ -1,17 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-using System.Reflection;
-using UVNF.Assembly;
+﻿using System;
 
 namespace UVNF.Core.Entities.ScriptLines
 {
     [AttributeUsage(AttributeTargets.Field)]
     public abstract class ScriptLineParameterAttribute : ScriptLineAttribute
     {
-        public ScriptLineParameterAttribute(string label) : base(label) { }
+        /// <param name="hidden">Hides the field from the Unity Editor if it's value is default</param>
+        public ScriptLineParameterAttribute(string label, bool optional) : base(label)
+        {
+            Optional = optional;
+        }
+
+        public abstract object DefaultValue { get; }
+        public readonly bool Optional;
 
         public abstract object ParseParameterValue(string parameter);
+
+        public virtual string ValueToString(object value) => value.ToString();
     }
 }

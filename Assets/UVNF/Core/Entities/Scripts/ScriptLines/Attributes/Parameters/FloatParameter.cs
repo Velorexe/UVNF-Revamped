@@ -1,17 +1,14 @@
 ﻿using System;
 using UnityEngine;
-using UnityEditor;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UVNF.Core.Entities.ScriptLines
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class FloatParameter : ScriptLineParameterAttribute
     {
-        public FloatParameter(string label) : base(label) { }
+        public FloatParameter(string label, bool optional = true) : base(label, optional) { }
+
+        public override object DefaultValue => default(float);
 
         public override object ParseParameterValue(string parameter)
         {

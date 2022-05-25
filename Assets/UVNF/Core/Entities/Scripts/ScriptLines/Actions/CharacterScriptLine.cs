@@ -1,8 +1,4 @@
 ﻿using Cysharp.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 using System.Threading;
 using UVNF.Core.Canvas;
@@ -14,26 +10,30 @@ namespace UVNF.Core.Entities.ScriptLines
     {
         public override char Literal => '@';
 
-        [TextParameter("name"), SerializeField]
+        [TextParameter("name", false)]
+        [SerializeField]
         private string _characterName = string.Empty;
 
-        [EnumParameter("emotion", typeof(CharacterEmotion)), SerializeField]
-        private CharacterEmotion _characterEmotion;
+        [TextParameter("pose")]
+        [SerializeField]
+        private string _characterPose = string.Empty;
 
-        [FloatParameter("x_position"), SerializeField]
-        private float _positionX = 0f;
-        [FloatParameter("y_position"), SerializeField]
-        private float _positionY = 0f;
-        
-        [FloatParameter("x_scale"), SerializeField]
-        private float _scaleX = 1f;
-        [FloatParameter("y_scale"), SerializeField]
-        private float _scaleY = 1f;
+        [EnumParameter("emotion", typeof(CharacterEmotion))]
+        [SerializeField]
+        private CharacterEmotion characterEmotion = CharacterEmotion.Happy;
+
+        [Vector2Parameter("pos")]
+        [SerializeField]
+        private Vector2 _characterPosition = Vector2.zero;
+
+        [Vector2Parameter("scale")]
+        [SerializeField]
+        private Vector2 _characterScale = Vector2.zero;
 
         public override async UniTask Execute(UVNFGameManager callback, CancellationToken token)
         {
             var manager = await callback.GetManager<CharacterManager>(token);
-            manager.AddCharacter(_characterName, new Vector2(_positionX, _positionY), new Vector2(_scaleX, _scaleY)).Forget();
+            manager.AddCharacter(_characterName, _characterPose, _characterPosition, _characterScale).Forget();
         }
     }
 
