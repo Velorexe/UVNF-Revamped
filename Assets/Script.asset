@@ -22,6 +22,5 @@ MonoBehaviour:
       data:
         _characterName: Novle
         _characterPose: 
-        characterEmotion: 0
-        _characterPosition: {x: 0.25, y: 0.5}
-        _characterScale: {x: 0, y: 0}
+        _characterPosition: {x: 0, y: 0}
+        _characterScale: {x: 1, y: 1}

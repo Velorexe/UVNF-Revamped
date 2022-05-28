@@ -9,7 +9,7 @@ using UVNF.Core.Entities.ScriptLines;
 
 namespace UVNF.Core.Canvas
 {
-    public class CharacterManager : UVNFManager
+    public class UVNFCharacterManager : UVNFManager
     {
         [SerializeField]
         private RectTransform _characterCanvas;
@@ -59,7 +59,7 @@ namespace UVNF.Core.Canvas
                     Debug.LogWarning("Character does not contain any poses.");
 
                 RectTransform transform = Instantiate(character.gameObject, _characterCanvas).GetComponent<RectTransform>();
-                transform.localPosition = new Vector2(position.x * _canvasSize.x, position.y * _canvasSize.y);
+                transform.localPosition = new Vector2(position.x * _canvasSize.x / 2f, position.y * _canvasSize.y);
 
                 Vector3 cS = transform.localScale;
                 transform.localScale = new Vector3(scale.x * cS.x, scale.y * cS.y, cS.z);

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UVNF.Core.Entities.Characters;
 using UnityEngine.UI;
+using UVNF.Utilities;
 
 namespace UVNF.Core.Canvas
 {
-    public class OnScreenCharacter : MonoBehaviour, ISerializationCallbackReceiver
+    public class OnScreenCharacter : MonoBehaviour
     {
         public string Name
         {
@@ -20,53 +21,28 @@ namespace UVNF.Core.Canvas
             get { return _poses; }
         }
         [SerializeField]
-        private Dictionary<string, RectTransform> _poses = new Dictionary<string, RectTransform>();
+        private SerializableDictionary<string, RectTransform> _poses = new SerializableDictionary<string, RectTransform>();
 
         [SerializeField]
-        private List<string> _poseKeys = new List<string>();
-        [SerializeField]
-        private List<RectTransform> _poseValues = new List<RectTransform>();
-
-        [SerializeField, HideInInspector]
         private string _defaultPose = string.Empty;
         [SerializeField, HideInInspector]
         private string _currentPose = string.Empty;
 
-        public void OnBeforeSerialize()
-        {
-            _poseKeys.Clear();
-            _poseValues.Clear();
-
-            foreach(KeyValuePair<string, RectTransform> valuePair in _poses)
-            {
-                _poseKeys.Add(valuePair.Key);
-                _poseValues.Add(valuePair.Value);
-            }
-        }
-
-        public void OnAfterDeserialize()
-        {
-            _poses = new Dictionary<string, RectTransform>();
-
-            for (int i = 0; i < Mathf.Min(_poseKeys.Count, _poseValues.Count); i++)
-                _poses.Add(_poseKeys[i], _poseValues[i]);
-        }
-
         public void SwitchToPose(string newPose)
         {
-            if (!newPose.Equals(_currentPose))
-            {
-                _poses[_currentPose].gameObject.SetActive(false);
-                _currentPose = newPose;
-
-                _poses[_currentPose].gameObject.SetActive(true);
-            }
-            else if (string.IsNullOrEmpty(newPose))
+            if (string.IsNullOrEmpty(newPose))
             {
                 Debug.LogWarning("Got an empty pose, picking default (first).");
 
                 _poses[_currentPose].gameObject.SetActive(false);
                 _poses[_defaultPose].gameObject.SetActive(true);
+            }
+            else if (!newPose.Equals(_currentPose))
+            {
+                _poses[_currentPose].gameObject.SetActive(false);
+                _currentPose = newPose;
+
+                _poses[_currentPose].gameObject.SetActive(true);
             }
         }
 
@@ -76,7 +52,12 @@ namespace UVNF.Core.Canvas
             _name = character.CharacterName;
             this.name = _name;
 
-            foreach(CharacterPose pose in character.Poses)
+            RectTransform currentTransform = GetComponent<RectTransform>();
+
+            currentTransform.anchorMin = new Vector2(0.5f, 0f);
+            currentTransform.anchorMax = new Vector2(0.5f, 0f);
+
+            foreach (CharacterPose pose in character.Poses)
             {
                 GameObject childPose = new GameObject(pose.PoseName, typeof(RectTransform));
                 childPose.transform.SetParent(this.transform);

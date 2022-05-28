@@ -31,11 +31,12 @@ namespace UVNF.Editor.Windows
 
         private static GUIStyle _selectedStyle;
 
-        private static string _characterPath = "Assets/UVNF/Resources/Characters/";
+        private static string _characterPath = "Assets/UVNF/Assets/Characters/";
 
         private void OnGUI()
         {
-            if(_characters == null) _characters = AssemblyHelpers.FindAssetsByType<Character>();
+            if (_characters == null)
+                _characters = AssemblyHelpers.FindAssetsByType<Character>();
 
             GUILayout.BeginHorizontal();
             {
@@ -46,14 +47,14 @@ namespace UVNF.Editor.Windows
                         GUILayout.Label("Characters", EditorStyles.boldLabel);
 
                         GUIContent refreshIcon = EditorGUIUtility.IconContent("d_Refresh");
-                        if(GUILayout.Button(refreshIcon, GUILayout.MaxWidth(30f)))
+                        if (GUILayout.Button(refreshIcon, GUILayout.MaxWidth(30f)))
                         {
                             AssetDatabase.Refresh();
                             _characters = AssemblyHelpers.FindAssetsByType<Character>();
                         }
 
                         GUIContent addButton = EditorGUIUtility.IconContent("d_Toolbar Plus");
-                        if(GUILayout.Button(addButton, GUILayout.MaxWidth(30f)))
+                        if (GUILayout.Button(addButton, GUILayout.MaxWidth(30f)))
                         {
                             //TODO: Get folder from EditorSettings
                             Character newCharacter = CreateInstance<Character>();
@@ -72,7 +73,7 @@ namespace UVNF.Editor.Windows
                 }
                 GUILayout.EndVertical();
 
-                if(_characters.Length > 0)
+                if (_characters.Length > 0)
                 {
                     Character character = _characters[_selectedCharacter];
 
@@ -83,12 +84,12 @@ namespace UVNF.Editor.Windows
                             character.SetCharacterName(EditorGUILayout.TextField(character.CharacterName, GUILayout.MinWidth(position.width - 350f)));
                             character.name = character.CharacterName;
 
-                            if(GUILayout.Button("Compile"))
+                            if (GUILayout.Button("Compile"))
                             {
                                 CompileCharacter(character);
                             }
 
-                            if(GUILayout.Button("Remove"))
+                            if (GUILayout.Button("Remove"))
                             {
                                 DestroyImmediate(character, true);
                                 _characters = AssemblyHelpers.FindAssetsByType<Character>();
@@ -96,8 +97,11 @@ namespace UVNF.Editor.Windows
                                 return;
                             }
 
-                            if(GUILayout.Button("Save", GUILayout.MaxWidth(50f)))
+                            if (GUILayout.Button("Save", GUILayout.MaxWidth(50f)))
                             {
+                                if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(character.PrecompiledCharacter, out string guid, out long localId))
+                                    UVNFResources.Instance.AddResource(guid, "Characters/" + character.CharacterName);
+
                                 AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(character), character.CharacterName);
                                 AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(character), ImportAssetOptions.ForceUpdate);
 
@@ -110,7 +114,7 @@ namespace UVNF.Editor.Windows
 
                         GUILayout.BeginVertical("box", GUILayout.MinWidth(position.width - 150f));
                         {
-                            if(GUILayout.Button("Add Pose"))
+                            if (GUILayout.Button("Add Pose"))
                             {
                                 CharacterPose newPose = CreateInstance<CharacterPose>();
 
@@ -126,13 +130,13 @@ namespace UVNF.Editor.Windows
                                 return;
                             }
 
-                            if(character.Poses.Length > 0)
+                            if (character.Poses.Length > 0)
                             {
                                 _poseScrollPosition = GUILayout.BeginScrollView(_poseScrollPosition, "horizontalscrollbar", GUIStyle.none, GUILayout.MaxHeight(350f), GUILayout.ExpandHeight(false));
                                 {
                                     GUILayout.BeginHorizontal();
                                     {
-                                        for(int i = 0; i < character.Poses.Length; i++)
+                                        for (int i = 0; i < character.Poses.Length; i++)
                                         {
                                             GUILayout.BeginVertical("box", GUILayout.MinWidth(150f));
                                             {
@@ -141,7 +145,7 @@ namespace UVNF.Editor.Windows
 
                                                 character.Poses[i].SetPoseSprite((Sprite)EditorGUILayout.ObjectField(character.Poses[i].PoseSprite, typeof(Sprite), false));
 
-                                                if(character.Poses[i].PoseSprite != null)
+                                                if (character.Poses[i].PoseSprite != null)
                                                 {
                                                     Rect lastRect = GUILayoutUtility.GetLastRect();
 
@@ -155,15 +159,15 @@ namespace UVNF.Editor.Windows
                                                     GUILayout.Space(lastRect.height);
                                                 }
 
-                                                if(GUILayout.Button("Edit"))
+                                                if (GUILayout.Button("Edit"))
                                                 {
                                                     CharacterPartEditorWindow window = GetWindow<CharacterPartEditorWindow>();
                                                     window.Init(character.Poses[i]);
                                                 }
 
-                                                if(GUILayout.Button("Remove"))
+                                                if (GUILayout.Button("Remove"))
                                                 {
-                                                    for(int j = 0; j < character.Poses[i].CharacterParts.Length; j++)
+                                                    for (int j = 0; j < character.Poses[i].CharacterParts.Length; j++)
                                                         DestroyImmediate(character.Poses[i].CharacterParts[j], true);
 
                                                     AssetDatabase.RemoveObjectFromAsset(character.Poses[i]);
@@ -195,7 +199,7 @@ namespace UVNF.Editor.Windows
 
         protected static GUIStyle SelectedStyle()
         {
-            if(_selectedStyle == null)
+            if (_selectedStyle == null)
             {
                 _selectedStyle = new GUIStyle();
 
@@ -220,6 +224,8 @@ namespace UVNF.Editor.Windows
 
             PrefabUtility.SaveAsPrefabAsset(newCharacter, _characterPath + "Compiled/" + character.CharacterName + ".prefab");
             AssetDatabase.SaveAssets();
+
+            DestroyImmediate(newCharacter);
         }
     }
 }

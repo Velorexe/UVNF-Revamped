@@ -42,7 +42,7 @@ MonoBehaviour:
   _characterParts:
   - {fileID: 1057812628004250672}
   - {fileID: -8125834245936952161}
---- !u!114 &-3666661197638602349
+--- !u!114 &-3227140852108958728
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -51,14 +51,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c31c79bd6389fe4ca379ca54fa4fd05, type: 3}
-  m_Name: Uninterested
+  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
+  m_Name: Eyes
   m_EditorClassIdentifier: 
-  _poseName: Uninterested
-  _poseSprite: {fileID: 21300000, guid: 8189c0c92cf2ae14c9a94047debd16bc, type: 3}
-  _characterParts:
-  - {fileID: 1171015885225482954}
-  - {fileID: 4569346946592510482}
+  _partName: Eyes
+  _poseNames:
+  - Uninterested
+  _poseSprites:
+  - {fileID: 21300000, guid: 48f617dbd62e16e4991c4c8bc0619cfe, type: 3}
+  _spriteRect:
+    serializedVersion: 2
+    x: -54
+    y: 1388
+    width: 255
+    height: 114
+  IsVisible: 1
+  SpriteToShow: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,7 +82,7 @@ MonoBehaviour:
   _characterName: Novle
   _poses:
   - {fileID: -6799954388658627493}
-  - {fileID: -3666661197638602349}
+  - {fileID: 9193753507018674173}
   PrecompiledCharacter: {fileID: 4534015410474157720, guid: 7e4de85c996000e47bee788d7c0c8c54,
     type: 3}
 --- !u!114 &1057812628004250672
@@ -102,32 +110,7 @@ MonoBehaviour:
     height: 85
   IsVisible: 1
   SpriteToShow: 0
---- !u!114 &1171015885225482954
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
-  m_Name: Eyes
-  m_EditorClassIdentifier: 
-  _partName: Eyes
-  _poseNames:
-  - Uninterested
-  _poseSprites:
-  - {fileID: 21300000, guid: 48f617dbd62e16e4991c4c8bc0619cfe, type: 3}
-  _spriteRect:
-    serializedVersion: 2
-    x: -55.71431
-    y: 1389.4283
-    width: 258
-    height: 117
-  IsVisible: 1
-  SpriteToShow: 0
---- !u!114 &4569346946592510482
+--- !u!114 &4415008744510443838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,8 +130,25 @@ MonoBehaviour:
   _spriteRect:
     serializedVersion: 2
     x: -46
-    y: 1269
-    width: 82
-    height: 50
+    y: 1265
+    width: 119
+    height: 65
   IsVisible: 1
   SpriteToShow: 0
+--- !u!114 &9193753507018674173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c31c79bd6389fe4ca379ca54fa4fd05, type: 3}
+  m_Name: Uninterested
+  m_EditorClassIdentifier: 
+  _poseName: Uninterested
+  _poseSprite: {fileID: 21300000, guid: 8189c0c92cf2ae14c9a94047debd16bc, type: 3}
+  _characterParts:
+  - {fileID: -3227140852108958728}
+  - {fileID: 4415008744510443838}

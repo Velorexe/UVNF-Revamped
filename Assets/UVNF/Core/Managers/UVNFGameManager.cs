@@ -9,7 +9,7 @@ using UVNF.Core.Entities;
 
 namespace UVNF.Core
 {
-    public class UVNFGameManager : Singleton<UVNFGameManager>
+    public class UVNFGameManager : MonoBehaviour
     {
         [SerializeField]
         private UVNFScript _startingScript;

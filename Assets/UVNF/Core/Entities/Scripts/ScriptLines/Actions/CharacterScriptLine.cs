@@ -22,13 +22,13 @@ namespace UVNF.Core.Entities.ScriptLines
         [SerializeField]
         private Vector2 _characterPosition = Vector2.zero;
 
-        [Vector2Parameter("scale")]
+        [Vector2Parameter("scale", 1f, 1f)]
         [SerializeField]
-        private Vector2 _characterScale = Vector2.zero;
+        private Vector2 _characterScale = Vector2.one;
 
         public override async UniTask Execute(UVNFGameManager callback, CancellationToken token)
         {
-            var manager = await callback.GetManager<CharacterManager>(token);
+            var manager = await callback.GetManager<UVNFCharacterManager>(token);
             manager.AddCharacter(_characterName, _characterPose, _characterPosition, _characterScale).Forget();
         }
     }
