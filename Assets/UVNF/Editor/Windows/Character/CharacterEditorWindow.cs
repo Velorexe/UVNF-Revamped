@@ -222,7 +222,9 @@ namespace UVNF.Editor.Windows
 
             onScreenCharacter.Compile(character);
 
-            PrefabUtility.SaveAsPrefabAsset(newCharacter, _characterPath + "Compiled/" + character.CharacterName + ".prefab");
+            GameObject prefab = PrefabUtility.SaveAsPrefabAsset(newCharacter, _characterPath + "Compiled/" + character.CharacterName + ".prefab");
+            character.PrecompiledCharacter = prefab;
+
             AssetDatabase.SaveAssets();
 
             DestroyImmediate(newCharacter);

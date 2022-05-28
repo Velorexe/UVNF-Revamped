@@ -21,6 +21,10 @@ MonoBehaviour:
     m_Address: Characters/Novle
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 9e86147f340104a45b63838d98435298
+    m_Address: Characters/Uvie
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3e2bdd965211bc24bb48bcb5ffd2dee9, type: 2}
   m_SchemaSet:

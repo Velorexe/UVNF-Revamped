@@ -1,0 +1,154 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-3458651117773778654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
+  m_Name: Eyes
+  m_EditorClassIdentifier: 
+  _partName: Eyes
+  _poseNames:
+  - Eyes
+  _poseSprites:
+  - {fileID: 21300000, guid: 26b1a05466212b746a00bd6c003ee2e2, type: 3}
+  _spriteRect:
+    serializedVersion: 2
+    x: -36
+    y: 1405
+    width: 230
+    height: 160
+  IsVisible: 1
+  SpriteToShow: 0
+--- !u!114 &-3415549495212797669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c31c79bd6389fe4ca379ca54fa4fd05, type: 3}
+  m_Name: Judging
+  m_EditorClassIdentifier: 
+  _poseName: Judging
+  _poseSprite: {fileID: 21300000, guid: 113012abbc83d1e419a03b0664318f4e, type: 3}
+  _characterParts:
+  - {fileID: 4882933547391980564}
+  - {fileID: 1107638927186624730}
+--- !u!114 &-2962776704276280543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c31c79bd6389fe4ca379ca54fa4fd05, type: 3}
+  m_Name: Explaining
+  m_EditorClassIdentifier: 
+  _poseName: Explaining
+  _poseSprite: {fileID: 21300000, guid: 23fdb3afb3bbe33478f104dd57312b3c, type: 3}
+  _characterParts:
+  - {fileID: -3458651117773778654}
+  - {fileID: 9110156100909959464}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4023533ec6fabf24b954dbf6edbf2679, type: 3}
+  m_Name: Uvie
+  m_EditorClassIdentifier: 
+  _characterName: Uvie
+  _poses:
+  - {fileID: -2962776704276280543}
+  - {fileID: -3415549495212797669}
+  PrecompiledCharacter: {fileID: 4656480639462923868, guid: 9e86147f340104a45b63838d98435298,
+    type: 3}
+--- !u!114 &1107638927186624730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
+  m_Name: Mouth
+  m_EditorClassIdentifier: 
+  _partName: Mouth
+  _poseNames:
+  - Judging
+  _poseSprites:
+  - {fileID: 21300000, guid: e866f5088573eb140b438789ce91c942, type: 3}
+  _spriteRect:
+    serializedVersion: 2
+    x: -32
+    y: 1270
+    width: 76
+    height: 43
+  IsVisible: 1
+  SpriteToShow: 0
+--- !u!114 &4882933547391980564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
+  m_Name: Eyes
+  m_EditorClassIdentifier: 
+  _partName: Eyes
+  _poseNames:
+  - Judging
+  _poseSprites:
+  - {fileID: 21300000, guid: 26b1a05466212b746a00bd6c003ee2e2, type: 3}
+  _spriteRect:
+    serializedVersion: 2
+    x: -33
+    y: 1408
+    width: 243
+    height: 160
+  IsVisible: 1
+  SpriteToShow: 0
+--- !u!114 &9110156100909959464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9292172ee168aac48a5670013917c16f, type: 3}
+  m_Name: Mouth
+  m_EditorClassIdentifier: 
+  _partName: Mouth
+  _poseNames:
+  - Explaining
+  _poseSprites:
+  - {fileID: 21300000, guid: e866f5088573eb140b438789ce91c942, type: 3}
+  _spriteRect:
+    serializedVersion: 2
+    x: -48
+    y: 1272
+    width: 76
+    height: 45
+  IsVisible: 1
+  SpriteToShow: 0
