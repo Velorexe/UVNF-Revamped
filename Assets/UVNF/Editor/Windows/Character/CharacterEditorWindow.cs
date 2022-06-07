@@ -100,7 +100,7 @@ namespace UVNF.Editor.Windows
                             if (GUILayout.Button("Save", GUILayout.MaxWidth(50f)))
                             {
                                 if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(character.PrecompiledCharacter, out string guid, out long localId))
-                                    UVNFResources.Instance.AddResource(guid, "Characters/" + character.CharacterName);
+                                    UVNFEditorResources.AddResource(guid, "Characters/" + character.CharacterName);
 
                                 AssetDatabase.RenameAsset(AssetDatabase.GetAssetPath(character), character.CharacterName);
                                 AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(character), ImportAssetOptions.ForceUpdate);

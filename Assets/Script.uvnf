@@ -1,2 +1,4 @@
-@char Novle pos:(0.25, 0.5)
+@char Novle pose:Excited pos:(0.25, 0.5)
 !comment Comment
+@say Yo name:Me
+@say Wut name:Oh waitInput:true

@@ -20,12 +20,15 @@ MonoBehaviour:
   - m_GUID: 7e4de85c996000e47bee788d7c0c8c54
     m_Address: Characters/Novle
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UVNF-Character
   - m_GUID: 9e86147f340104a45b63838d98435298
     m_Address: Characters/Uvie
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - UVNF-Character
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3e2bdd965211bc24bb48bcb5ffd2dee9, type: 2}
   m_SchemaSet:
-    m_Schemas: []
+    m_Schemas:
+    - {fileID: 11400000, guid: 5546184158b44324a84fc6ea02c68d02, type: 2}

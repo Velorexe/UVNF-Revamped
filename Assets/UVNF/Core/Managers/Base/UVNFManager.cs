@@ -8,6 +8,6 @@ namespace UVNF.Core
 {
     public abstract class UVNFManager : MonoBehaviour
     {
-        public abstract UniTaskVoid Init(CancellationToken token);
+        public virtual async UniTask Init(UVNFGameManager gameManager, CancellationToken token) => await UniTask.Yield();
     }
 }

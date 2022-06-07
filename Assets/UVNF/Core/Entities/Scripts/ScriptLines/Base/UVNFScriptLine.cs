@@ -18,6 +18,31 @@ namespace UVNF.Core.Entities
         /// </summary>
         protected UVNFScriptLine() { }
 
+#if UNITY_EDITOR
+        public virtual string ToCommandString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(Literal);
+
+            ScriptLineAliasAttribute alias = GetType().GetCustomAttribute<ScriptLineAliasAttribute>();
+            builder.Append(alias != null ? alias.GetAlias() : GetType().Name.Replace("ScriptLine", ""));
+
+            FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            foreach (FieldInfo t in fields)
+            {
+                var test = t.GetValue(this);
+                if (Attribute.GetCustomAttribute(t, typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute attribute
+                    && !string.IsNullOrEmpty(t.GetValue(this).ToString())
+                    && !(t.GetValue(this).Equals(attribute.DefaultValue)))
+                {
+                    builder.Append(" " + (attribute.Optional ? attribute.Label + ":" : ""));
+                    builder.Append(attribute.ValueToString(t.GetValue(this)));
+                }
+            }
+
+            return builder.ToString();
+        }
+
         /// <summary>
         /// Processes the incoming parameters and values
         /// </summary>
@@ -46,33 +71,6 @@ namespace UVNF.Core.Entities
                     }
                 }
             }
-        }
-
-        public virtual async UniTask Execute(UVNFGameManager callback, CancellationToken token) { await UniTask.Yield(); }
-
-#if UNITY_EDITOR
-        public virtual string ToCommandString()
-        {
-            StringBuilder builder = new StringBuilder();
-            builder.Append(Literal);
-
-            ScriptLineAliasAttribute alias = GetType().GetCustomAttribute<ScriptLineAliasAttribute>();
-            builder.Append(alias != null ? alias.GetAlias() : GetType().Name.Replace("ScriptLine", ""));
-
-            FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            foreach (FieldInfo t in fields)
-            {
-                var test = t.GetValue(this);
-                if (Attribute.GetCustomAttribute(t, typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute attribute
-                    && !string.IsNullOrEmpty(t.GetValue(this).ToString())
-                    && !(t.GetValue(this).Equals(attribute.DefaultValue)))
-                {
-                    builder.Append(" " + (attribute.Optional ? attribute.Label + ":" : ""));
-                    builder.Append(attribute.ValueToString(t.GetValue(this)));
-                }
-            }
-
-            return builder.ToString();
         }
 #endif
     }

@@ -6,6 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UVNF.Core.Entities.Characters;
 using UVNF.Core.Entities.ScriptLines;
+using System.Linq;
 
 namespace UVNF.Core.Canvas
 {
@@ -17,29 +18,16 @@ namespace UVNF.Core.Canvas
         private Vector2 _canvasSize;
 
         private List<OnScreenCharacter> _activeCharacters = new List<OnScreenCharacter>();
+        private List<GameObject> _cachedCharacters;
 
-        private IUniTaskAsyncEnumerable<OnScreenCharacter> _cachedCharacters;
+        private UVNFResources _resources;
 
-        public override async UniTaskVoid Init(CancellationToken token)
+        public override async UniTask Init(UVNFGameManager gameManager, CancellationToken token)
         {
             _characterCanvas = this.GetComponent<RectTransform>();
             _canvasSize = _characterCanvas.rect.size;
 
-            _cachedCharacters = UniTaskAsyncEnumerable.Create<OnScreenCharacter>(async (writer, _token) =>
-            {
-                OnScreenCharacter[] characters = Resources.FindObjectsOfTypeAll<OnScreenCharacter>();
-                await UniTask.Yield();
-
-                int index = 0;
-
-                while (index < characters.Length)
-                {
-                    await writer.YieldAsync(characters[index]);
-                    index++;
-                    await UniTask.Yield();
-                }
-            });
-            await UniTask.Yield();
+            _cachedCharacters = await gameManager.Resources.GetResourcesWithLabel<GameObject>("UVNF-Character");
         }
 
         /// <summary>
@@ -48,13 +36,14 @@ namespace UVNF.Core.Canvas
         /// <param name="characterName"></param>
         /// <param name="screenPositionPercentage"></param>
         /// <returns></returns>
-        public async UniTaskVoid AddCharacter(string characterName, string pose, Vector2 position, Vector2 scale)
+        public async UniTask AddCharacter(string characterName, string pose, Vector2 position, Vector2 scale)
         {
-            OnScreenCharacter character = null;
-            await _cachedCharacters.ForEachAsync(x => { if (x.Name == characterName) character = x; });
+            GameObject characterObject = _cachedCharacters.FirstOrDefault(x => x.GetComponent<OnScreenCharacter>().Name == characterName);
 
-            if (character != null)
+            if (characterObject != null)
             {
+                OnScreenCharacter character = characterObject.GetComponent<OnScreenCharacter>();
+
                 if (character.Poses.Count == 0)
                     Debug.LogWarning("Character does not contain any poses.");
 

@@ -26,10 +26,9 @@ namespace UVNF.Core.Entities.ScriptLines
         [SerializeField]
         private Vector2 _characterScale = Vector2.one;
 
-        public override async UniTask Execute(UVNFGameManager callback, CancellationToken token)
+        public async UniTask Execute(UVNFCharacterManager characterManager)
         {
-            var manager = await callback.GetManager<UVNFCharacterManager>(token);
-            manager.AddCharacter(_characterName, _characterPose, _characterPosition, _characterScale).Forget();
+            await characterManager.AddCharacter(_characterName, _characterPose, _characterPosition, _characterScale);
         }
     }
 
