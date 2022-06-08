@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using UnityEngine;
 using UVNF.Assembly;
 using UVNF.Core.Entities.ScriptLines;
 
@@ -14,82 +17,51 @@ namespace UVNF.Core.Entities.Factories
             _scriptLineTypes = AssemblyHelpers.GetEnumerableOfType<UVNFScriptLine>();
         }
 
-        /// <summary>
-        /// Creates a new UVNFScriptLine based of the given tag
-        /// </summary>
-        /// <param name="tag"></param>
-        /// <returns></returns>
-        public UVNFScriptLine FromTag(string tag)
+        public UVNFScriptLine CreateScriptLine(Type scriptLineType, (string, string)[] parameterValueData, string defaultParameter)
         {
-            char literal = tag[0];
-
-            //If the literal is a Comment
-            if (literal == ';')
-                return null;
-            //Else the literal is most likely a Command
+            if (!scriptLineType.IsSubclassOf(typeof(UVNFScriptLine)))
+                Debug.LogWarning($"Type '{scriptLineType.Name}' isn't a subclass of Type UVNFScriptLine.");
             else
             {
-                string alias = tag.Split(' ')[0];
-                alias = alias.Substring(1, alias.Length - 1);
+                UVNFScriptLine scriptLine = Activator.CreateInstance(scriptLineType) as UVNFScriptLine;
 
-                for (int i = 0; i < _scriptLineTypes.Length; i++)
+                FieldInfo defaultField = null;
+                ScriptLineParameterAttribute defaultAttribute = null;
+
+                FieldInfo[] fields = scriptLineType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                ScriptLineParameterAttribute[] attributes = new ScriptLineParameterAttribute[fields.Length];
+
+                fields = fields.Where((x, i) =>
                 {
-                    if (literal == _scriptLineTypes[i].Literal)
+                    if (Attribute.GetCustomAttribute(x, typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute attribute)
                     {
-                        ScriptLineAliasAttribute aliasAttribute = _scriptLineTypes[i].GetType().GetCustomAttribute<ScriptLineAliasAttribute>();
-                        string filteredLine = tag.Remove(0, alias.Length + 2);
-
-                        // If the ScriptLine has the same alias
-                        if ((alias != null && aliasAttribute.HasAlias(alias)) || (alias == null && _scriptLineTypes[i].GetType().Name.Replace("ScriptLine", "").ToLower() == alias))
+                        if (!attribute.Optional)
                         {
-                            string defaultParameter = string.Empty;
-                            if (!filteredLine.Split(' ')[0].Contains(":"))
-                            {
-                                defaultParameter = filteredLine.Split(' ')[0].Trim();
-                                filteredLine = filteredLine.Substring(defaultParameter.Length);
-                            }
-
-                            Tuple<string[], string[]> parameterAndValues = ParseParametersAndValues(filteredLine);
-
-                            UVNFScriptLine scriptLine = Activator.CreateInstance(_scriptLineTypes[i].GetType()) as UVNFScriptLine;
-                            scriptLine.ProcessParameters(defaultParameter, parameterAndValues.Item1, parameterAndValues.Item2);
-
-                            return scriptLine;
+                            defaultField = x;
+                            defaultAttribute = attribute;
                         }
+
+                        attributes[i] = attribute;
+
+                        return true;
                     }
+                    return false;
+                }).ToArray();
+
+                if (defaultField != null && defaultAttribute != null && !string.IsNullOrEmpty(defaultParameter))
+                    defaultField.SetValue(scriptLine, defaultAttribute.ParseParameterValue(defaultParameter));
+
+                foreach ((string, string) parameter in parameterValueData)
+                {
+                    int index = Array.FindIndex(attributes, x => x.Label.Equals(parameter.Item1));
+                    if (index > -1)
+                        fields[index].SetValue(scriptLine, attributes[index].ParseParameterValue(parameter.Item2));
                 }
+
+                return scriptLine;
             }
 
-            // Something went wrong, none of the characters are recognized
             return null;
-        }
-
-        /// <summary>
-        /// Returns parameters and values from the given sentence
-        /// </summary>
-        /// <param name="filteredLine"></param>
-        /// <returns></returns>
-        private Tuple<string[], string[]> ParseParametersAndValues(string filteredLine)
-        {
-            string[] splitLine = filteredLine.Split(':');
-            Tuple<string[], string[]> result = new Tuple<string[], string[]>(new string[splitLine.Length - 1], new string[splitLine.Length - 1]);
-
-            // Go up to the amount of parameters
-            for (int i = 0; i < splitLine.Length - 1; i++)
-            {
-                string[] splitParameter = splitLine[i].Split(' ');
-
-                // Set the parameter name
-                result.Item1[i] = splitParameter[splitParameter.Length - 1];
-
-                splitParameter = splitLine[i + 1].Split(' ');
-                result.Item2[i] = string.Join(" ", splitParameter, 0, (splitParameter.Length == 1 ? 1 : splitParameter.Length - 1));
-
-                if (i == splitLine.Length - 2)
-                    result.Item2[i] = string.Join(" ", splitParameter, 0, splitParameter.Length);
-            }
-
-            return result;
         }
     }
 }

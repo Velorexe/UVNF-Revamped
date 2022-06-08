@@ -96,7 +96,7 @@ namespace UVNF.Core
 
             if (manager == null)
             {
-                manager = (UVNFManager)_managerPrefabs.FirstOrDefault(x => x.GetType() == managerType);
+                manager = _managerPrefabs.FirstOrDefault(x => x.GetType() == managerType);
 
                 GameObject managerObject = Instantiate(manager.gameObject, _uvnfCanvas);
                 manager = (UVNFManager)managerObject.GetComponent(managerType);

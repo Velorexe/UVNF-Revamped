@@ -6,7 +6,7 @@ namespace UVNF.Core.Entities.ScriptLines
     {
         public BooleanParameter(string label, bool optional = true) : base(label, optional) { }
 
-        public override object DefaultValue => false;
+        public override object DefaultValue => true;
 
         public override object ParseParameterValue(string parameter)
         {

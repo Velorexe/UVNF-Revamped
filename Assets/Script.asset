@@ -16,30 +16,25 @@ MonoBehaviour:
   - id: 0
   - id: 1
   - id: 2
-  - id: 3
   AssetPath: Assets/Script.uvnf
   references:
     version: 1
     00000000:
+      type: {class: DialogueScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
+      data:
+        _dialogue: Wow, this is really working!?
+        _characterName: Me
+        _waitForInput: 1
+    00000001:
+      type: {class: DialogueScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
+      data:
+        _dialogue: Yes.
+        _characterName: Compiler
+        _waitForInput: 1
+    00000002:
       type: {class: CharacterScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
       data:
-        _characterName: Novle
-        _characterPose: Excited
-        _characterPosition: {x: 0.25, y: 0.5}
+        _characterName: Uvie
+        _characterPose: Explaining
+        _characterPosition: {x: 0, y: 0}
         _characterScale: {x: 1, y: 1}
-    00000001:
-      type: {class: CommentScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
-      data:
-        Info: Comment
-    00000002:
-      type: {class: DialogueScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
-      data:
-        _dialogue: Yo
-        _characterName: Me
-        _waitForInput: 0
-    00000003:
-      type: {class: DialogueScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
-      data:
-        _dialogue: Wut
-        _characterName: Oh
-        _waitForInput: 1

@@ -37,6 +37,8 @@ namespace UVNF.Core.Canvas
                 _poses[_currentPose].gameObject.SetActive(false);
                 _poses[_defaultPose].gameObject.SetActive(true);
             }
+            else if (!_poses.ContainsKey(newPose))
+                Debug.LogWarning($"OnScreenCharacter '{Name}' doesn't have the pose '{newPose}', but was trying to access it anyway.");
             else if (!newPose.Equals(_currentPose))
             {
                 _poses[_currentPose].gameObject.SetActive(false);

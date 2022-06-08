@@ -8,6 +8,7 @@ using UnityEngine;
 using UVNF.Core.Entities;
 using UVNF.Core.Entities.ScriptLines;
 using UVNF.Editor.Extensions;
+using UVNF.Editor.Importer.Parser;
 
 namespace UVNF.Editor.Importer
 {
@@ -38,6 +39,8 @@ namespace UVNF.Editor.Importer
         private string[] _stringLines = new string[0];
         private string _suggestAppend = string.Empty;
 
+        private IUVNFScriptParser _scriptParser = new UVNFScriptParser();
+
         public override void OnInspectorGUI()
         {
             if (_uvnfSkin == null)
@@ -45,6 +48,9 @@ namespace UVNF.Editor.Importer
 
             if (Event.current.type == EventType.MouseDrag)
                 Repaint();
+
+            if (_scriptParser == null)
+                _scriptParser = new UVNFScriptParser();
 
             // true if an individual element is clicked
             bool onElementClicked = false;
@@ -152,7 +158,7 @@ namespace UVNF.Editor.Importer
                                                 // Add Hidden tag
                                                 if (Attribute.GetCustomAttribute(fields[j], typeof(ScriptLineParameterAttribute)) is ScriptLineParameterAttribute field
                                                     && (!field.Optional || (field.Optional && !fields[j].GetValue(_script.Lines[i]).Equals(field.DefaultValue)) || _focusedLine == i))
-                                                
+
                                                 {
                                                     if (currentWidth + 5f > maxWidth)
                                                     {
@@ -387,10 +393,11 @@ namespace UVNF.Editor.Importer
 
         private void ParseLinesToScript(string path)
         {
-            string[] lines = File.ReadAllLines(path);
+            string fullPath = Path.Combine(Application.dataPath, path.Replace("Assets/", ""));
+            string[] lines = File.ReadAllLines(fullPath);
 
-            _script = CreateInstance<UVNFScript>();
-            _script.CompileRawLines(lines, path);
+            _script = _scriptParser.CompileLines(CreateInstance<UVNFScript>(), lines);
+            _script.AssetPath = path;
 
             _stringLines = lines;
         }
@@ -399,8 +406,8 @@ namespace UVNF.Editor.Importer
         {
             string[] lines = File.ReadAllLines(e.FullPath);
 
-            _script = CreateInstance<UVNFScript>();
-            _script.CompileRawLines(lines);
+            _script = _scriptParser.CompileLines(CreateInstance<UVNFScript>(), lines);
+            _script.AssetPath = e.FullPath;
 
             _stringLines = lines;
         }
@@ -409,7 +416,7 @@ namespace UVNF.Editor.Importer
         {
             base.OnDisable();
 
-            File.WriteAllText(_script.AssetPath, _script.ToDocument());
+            File.WriteAllText(_script.AssetPath, _scriptParser.ExportLines(_script));
         }
 
         private static string CleanParamaterName(string name)
