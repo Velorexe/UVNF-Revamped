@@ -6,7 +6,7 @@ namespace UVNF.Utilities
     [System.Serializable]
 #pragma warning disable CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
 #pragma warning disable CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
-    public class SerializableSystemType
+    public class SerializableType
 #pragma warning restore CS0661 // Type defines operator == or operator != but does not override Object.GetHashCode()
 #pragma warning restore CS0659 // Type overrides Object.Equals(object o) but does not override Object.GetHashCode()
     {
@@ -52,7 +52,7 @@ namespace UVNF.Utilities
             m_SystemType = System.Type.GetType(m_AssemblyQualifiedName);
         }
 
-        public SerializableSystemType(System.Type _SystemType)
+        public SerializableType(System.Type _SystemType)
         {
             m_SystemType = _SystemType;
             m_Name = _SystemType.Name;
@@ -62,7 +62,7 @@ namespace UVNF.Utilities
 
         public override bool Equals(System.Object obj)
         {
-            SerializableSystemType temp = obj as SerializableSystemType;
+            SerializableType temp = obj as SerializableType;
             if ((object)temp == null)
             {
                 return false;
@@ -70,13 +70,13 @@ namespace UVNF.Utilities
             return this.Equals(temp);
         }
 
-        public bool Equals(SerializableSystemType _Object)
+        public bool Equals(SerializableType _Object)
         {
             //return m_AssemblyQualifiedName.Equals(_Object.m_AssemblyQualifiedName);
             return _Object.SystemType.Equals(SystemType);
         }
 
-        public static bool operator ==(SerializableSystemType a, SerializableSystemType b)
+        public static bool operator ==(SerializableType a, SerializableType b)
         {
             // If both are null, or both are same instance, return true.
             if (System.Object.ReferenceEquals(a, b))
@@ -93,7 +93,7 @@ namespace UVNF.Utilities
             return a.Equals(b);
         }
 
-        public static bool operator !=(SerializableSystemType a, SerializableSystemType b)
+        public static bool operator !=(SerializableType a, SerializableType b)
         {
             return !(a == b);
         }

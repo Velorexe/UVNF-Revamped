@@ -11,9 +11,27 @@ namespace UVNF.Assembly
     {
         public static T[] GetEnumerableOfType<T>(params object[] constructorArgs) where T : class
         {
+            var whatAssembly = SR.Assembly.GetAssembly(typeof(T));
+            var types = SR.Assembly.GetAssembly(typeof(T)).GetTypes();
+
             List<T> objects = new List<T>();
             foreach (Type type in SR.Assembly.GetAssembly(typeof(T)).GetTypes()
-                .Where(x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(typeof(T))))
+                .Where(x =>
+                {
+                    return x.IsClass && !x.IsAbstract && x.IsSubclassOf(typeof(T));
+                }))
+            {
+                objects.Add((T)Activator.CreateInstance(type, constructorArgs));
+            }
+            return objects.ToArray();
+        }
+
+        public static T[] GetEnumerableOfInterfaceType<T>(params object[] constructorArgs) where T : class
+        {
+            var interfaceType = typeof(T);
+            List<T> objects = new List<T>();
+            foreach (Type type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes())
+                 .Where(x => interfaceType.IsAssignableFrom(x) && !x.IsInterface && !x.IsAbstract))
             {
                 objects.Add((T)Activator.CreateInstance(type, constructorArgs));
             }
@@ -35,7 +53,8 @@ namespace UVNF.Assembly
         public static object GetDefaultValue(this Type type)
         {
             // Validate parameters.
-            if (type == null) throw new ArgumentNullException("type");
+            if (type == null)
+                throw new ArgumentNullException("type");
 
             // We want an Func<object> which returns the default.
             // Create that expression here.

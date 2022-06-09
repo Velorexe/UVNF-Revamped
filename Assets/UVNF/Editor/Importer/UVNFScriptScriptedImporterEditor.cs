@@ -39,18 +39,18 @@ namespace UVNF.Editor.Importer
         private string[] _stringLines = new string[0];
         private string _suggestAppend = string.Empty;
 
-        private IUVNFScriptParser _scriptParser = new UVNFScriptParser();
+        private IUVNFScriptParser _parser;
 
         public override void OnInspectorGUI()
         {
-            if (_uvnfSkin == null)
-                _uvnfSkin = EditorGUIUtility.Load("Assets/UVNF/Editor/GUISKIN/UVNFSkin.guiskin") as GUISkin;
+            if (_uvnfSkin == null || _uvnfSkin != UVNFEditorSettings.GetOrCreateSettings().EditorSkin)
+                _uvnfSkin = UVNFEditorSettings.GetOrCreateSettings().EditorSkin;
 
             if (Event.current.type == EventType.MouseDrag)
                 Repaint();
 
-            if (_scriptParser == null)
-                _scriptParser = new UVNFScriptParser();
+            GUISkin cachedSkin = GUI.skin;
+            GUI.skin = _uvnfSkin;
 
             // true if an individual element is clicked
             bool onElementClicked = false;
@@ -325,6 +325,7 @@ namespace UVNF.Editor.Importer
             }
 
             base.ApplyRevertGUI();
+            GUI.skin = cachedSkin;
         }
 
         private IEnumerator ForceRepaint()
@@ -396,7 +397,9 @@ namespace UVNF.Editor.Importer
             string fullPath = Path.Combine(Application.dataPath, path.Replace("Assets/", ""));
             string[] lines = File.ReadAllLines(fullPath);
 
-            _script = _scriptParser.CompileLines(CreateInstance<UVNFScript>(), lines);
+            _parser = UVNFEditorSettings.GetOrCreateSettings().GetParser();
+
+            _script = _parser.CompileLines(CreateInstance<UVNFScript>(), lines);
             _script.AssetPath = path;
 
             _stringLines = lines;
@@ -406,7 +409,7 @@ namespace UVNF.Editor.Importer
         {
             string[] lines = File.ReadAllLines(e.FullPath);
 
-            _script = _scriptParser.CompileLines(CreateInstance<UVNFScript>(), lines);
+            _script = _parser.CompileLines(CreateInstance<UVNFScript>(), lines);
             _script.AssetPath = e.FullPath;
 
             _stringLines = lines;
@@ -416,7 +419,7 @@ namespace UVNF.Editor.Importer
         {
             base.OnDisable();
 
-            File.WriteAllText(_script.AssetPath, _scriptParser.ExportLines(_script));
+            File.WriteAllText(_script.AssetPath, _parser.ExportLines(_script));
         }
 
         private static string CleanParamaterName(string name)
