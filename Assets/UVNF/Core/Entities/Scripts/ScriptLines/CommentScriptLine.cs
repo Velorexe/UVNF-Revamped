@@ -11,7 +11,7 @@ namespace UVNF.Core.Entities.ScriptLines
     {
         public override char Literal => '!';
 
-        [TextParameter("info", false)]
+        [TextParameter("info", optional: false)]
         public string Info = string.Empty;
     }
 }

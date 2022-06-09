@@ -10,6 +10,9 @@ namespace UVNF.Editor.Windows
 {
     public class CharacterPartEditorWindow : EditorWindow
     {
+        // TODO: Fix the zoom functionality
+        private const bool c_zoomEnabled = false;
+
         private CharacterPose _focusedPose;
 
         private Vector2 _scrollPosition = new Vector2();
@@ -39,6 +42,8 @@ namespace UVNF.Editor.Windows
 
         private Vector2 _anchorOffset = new Vector2();
 
+        private Rect _screenSizeRect = new Rect(0f, 1080f, 1920f, 1080f);
+
         public void Init(CharacterPose focusedCharacter)
         {
             CharacterPartEditorWindow window = GetWindow<CharacterPartEditorWindow>();
@@ -51,12 +56,13 @@ namespace UVNF.Editor.Windows
 
         private void OnGUI()
         {
-            if (_focusedPose == null) Close();
+            if (_focusedPose == null)
+                Close();
 
             #region Canvas Dragging
             if (_focusedPose.PoseSprite != null && _drawRect.Contains(Event.current.mousePosition))
             {
-                if (Event.current.type == EventType.ScrollWheel)
+                if (Event.current.type == EventType.ScrollWheel && c_zoomEnabled)
                 {
                     if (Event.current.delta.y < 0f && _zoomAmount < 10f)
                         _zoomAmount += 0.25f;
@@ -81,12 +87,6 @@ namespace UVNF.Editor.Windows
                 {
                     _imageOffset += (Event.current.mousePosition - _canvasDragPoint);
                     _canvasDragPoint = Event.current.mousePosition;
-
-                    //if (_imageOffset.x > 0f) _imageOffset.x = 0f;
-                    //if (_imageOffset.y > 0f) _imageOffset.y = 0f;
-
-                    //if (Mathf.Abs(_imageOffset.x) > _focusedPose.PoseSprite.rect.width) _imageOffset.x = -_focusedPose.PoseSprite.rect.width;
-                    //if (Mathf.Abs(_imageOffset.y) > _focusedPose.PoseSprite.rect.height) _imageOffset.y = -_focusedPose.PoseSprite.rect.height;
 
                     Repaint();
                 }
@@ -195,7 +195,7 @@ namespace UVNF.Editor.Windows
                                 }
                                 #endregion
                             }
-                            else if(partRect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown && Event.current.button == 0)
+                            else if (partRect.Contains(Event.current.mousePosition) && Event.current.type == EventType.MouseDown && Event.current.button == 0)
                             {
                                 _focusedCharacterPart = Array.IndexOf(_focusedPose.CharacterParts, part);
 
@@ -292,15 +292,17 @@ namespace UVNF.Editor.Windows
                             _imageOffset = Vector2.zero;
                         }
 
-                        if (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition)) toolTip = "Recenter";
+                        if (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
+                            toolTip = "Recenter";
 
                         icon = _gizmosVisible ? EditorGUIUtility.IconContent("d_scenevis_visible_hover@2x") : EditorGUIUtility.IconContent("d_scenevis_hidden_hover@2x");
-                        if(GUILayout.Button(icon, GUILayout.ExpandWidth(false)))
+                        if (GUILayout.Button(icon, GUILayout.ExpandWidth(false)))
                         {
                             _gizmosVisible = !_gizmosVisible;
                         }
 
-                        if (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition)) toolTip = "Hide Gizmos";
+                        if (GUILayoutUtility.GetLastRect().Contains(Event.current.mousePosition))
+                            toolTip = "Hide Gizmos";
                     }
                     GUILayout.EndHorizontal();
 
@@ -408,6 +410,15 @@ namespace UVNF.Editor.Windows
                 #endregion
             }
             GUILayout.EndHorizontal();
+
+            #region Screen Size Reference
+            Vector2 screenSizePosition = _imageOffset;
+
+            screenSizePosition.x += 200f - _screenSizeRect.width / 2f + _focusedPose.PoseSprite.rect.width / 2f;
+            screenSizePosition.y += _focusedPose.PoseSprite.rect.height - _screenSizeRect.height;
+
+            DrawBounds(new Rect(screenSizePosition, _screenSizeRect.size * _zoomAmount), Color.blue, 2f);
+            #endregion
         }
 
         private void DrawBounds(Rect bounds, Color color, float width)

@@ -26,7 +26,7 @@ public class UVNFEditorSettings : ScriptableObject
         {
             settings = CreateInstance<UVNFEditorSettings>();
 
-            settings.m_UVNFScriptParser = new SerializableType(typeof(UVNFScriptParser));
+            settings.m_UVNFScriptParser = new SerializableType(typeof(UVNFDefaultScriptParser));
             settings.m_GUISkin = EditorGUIUtility.Load("Assets/UVNF/Editor/GUISKIN/UVNFSkin.guiskin") as GUISkin;
 
             AssetDatabase.CreateAsset(settings, k_SettingsPath);
@@ -56,6 +56,10 @@ static class UVNFEditorSettingsEditor
         {
             _UVNFScriptParsers = AssemblyHelpers.GetEnumerableOfInterfaceType<IUVNFScriptParser>().Select(x => new SerializableType(x.GetType())).ToArray();
             _UVNFScriptParserLabels = _UVNFScriptParsers.Select(x => new GUIContent(x.Name)).ToArray();
+
+            Type parserType = UVNFEditorSettings.GetOrCreateSettings().ScriptParserType;
+            if (parserType != null)
+                _UVNFScriptParserIndex = Array.FindIndex(_UVNFScriptParsers, (x) => x.SystemType == parserType);
         }
     }
 
@@ -71,8 +75,9 @@ static class UVNFEditorSettingsEditor
 
                 SerializedObject settings = UVNFEditorSettings.GetSerializedSettings();
 
-                // TODO: Get the actual index of the parser
-                settings.FindProperty("m_UVNFScriptParser").managedReferenceValue = _UVNFScriptParsers[EditorGUILayout.Popup(new GUIContent("Script Parser"), _UVNFScriptParserIndex, _UVNFScriptParserLabels)];
+                _UVNFScriptParserIndex = EditorGUILayout.Popup(new GUIContent("Script Parser"), _UVNFScriptParserIndex, _UVNFScriptParserLabels);
+                settings.FindProperty("m_UVNFScriptParser").managedReferenceValue = _UVNFScriptParsers[_UVNFScriptParserIndex];
+
                 EditorGUILayout.PropertyField(settings.FindProperty("m_GUISkin"), new GUIContent("GUI Skin"));
 
                 settings.ApplyModifiedProperties();

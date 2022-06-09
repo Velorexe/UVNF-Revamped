@@ -12,7 +12,7 @@ namespace UVNF.Core.Entities.ScriptLines
     {
         public override char Literal => '#';
 
-        [TextParameter("title", false)]
+        [TextParameter("title", optional: false)]
         public string _chapterTitle = string.Empty;
     }
 }

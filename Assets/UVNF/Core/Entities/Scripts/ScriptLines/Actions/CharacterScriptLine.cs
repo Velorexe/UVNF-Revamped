@@ -10,7 +10,7 @@ namespace UVNF.Core.Entities.ScriptLines
     {
         public override char Literal => '@';
 
-        [TextParameter("name", false)]
+        [TextParameter("name", optional: false)]
         [SerializeField]
         private string _characterName = string.Empty;
 
@@ -26,8 +26,13 @@ namespace UVNF.Core.Entities.ScriptLines
         [SerializeField]
         private Vector2 _characterScale = Vector2.one;
 
+        [BooleanParameter("mirrored")]
+        [SerializeField]
+        private bool _mirrored = false;
+
         public async UniTask Execute(UVNFCharacterManager characterManager)
         {
+            _characterScale.x = _mirrored ? -_characterScale.x : _characterScale.x;
             await characterManager.AddCharacter(_characterName, _characterPose, _characterPosition, _characterScale);
         }
     }

@@ -19,10 +19,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 53d6612fc00e9c84d992460648aa7384, type: 3}
   _spriteRect:
     serializedVersion: 2
-    x: -19.999985
-    y: 1319.3333
-    width: 34
-    height: 109
+    x: -20.999985
+    y: 1308.3333
+    width: 113
+    height: 100
   IsVisible: 1
   SpriteToShow: 0
 --- !u!114 &-6799954388658627493
@@ -106,8 +106,8 @@ MonoBehaviour:
     serializedVersion: 2
     x: -4
     y: 1414
-    width: 587
-    height: 85
+    width: 279
+    height: 144
   IsVisible: 1
   SpriteToShow: 0
 --- !u!114 &4415008744510443838

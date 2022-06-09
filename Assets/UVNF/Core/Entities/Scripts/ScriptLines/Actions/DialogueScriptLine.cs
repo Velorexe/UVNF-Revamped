@@ -9,7 +9,7 @@ namespace UVNF.Core.Entities.ScriptLines
     {
         public override char Literal => '@';
 
-        [TextParameter("dialogue", false)]
+        [TextParameter("dialogue", optional: false)]
         [SerializeField]
         private string _dialogue = string.Empty;
 
@@ -17,7 +17,7 @@ namespace UVNF.Core.Entities.ScriptLines
         [SerializeField]
         private string _characterName = string.Empty;
 
-        [BooleanParameter("waitInput")]
+        [BooleanParameter("waitInput", defaultValue: true)]
         [SerializeField]
         private bool _waitForInput = true;
 

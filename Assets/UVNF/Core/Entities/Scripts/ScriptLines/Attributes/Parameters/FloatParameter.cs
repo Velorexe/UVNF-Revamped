@@ -6,9 +6,7 @@ namespace UVNF.Core.Entities.ScriptLines
     [AttributeUsage(AttributeTargets.Field)]
     public class FloatParameter : ScriptLineParameterAttribute
     {
-        public FloatParameter(string label, bool optional = true) : base(label, optional) { }
-
-        public override object DefaultValue => default(float);
+        public FloatParameter(string label, float defaultValue = 0f, bool optional = true) : base(label, defaultValue, optional) { }
 
         public override object ParseParameterValue(string parameter)
         {

@@ -5,13 +5,7 @@ namespace UVNF.Core.Entities.ScriptLines
 {
     public class Vector2ParameterAttribute : ScriptLineParameterAttribute
     {
-        public Vector2ParameterAttribute(string label, float defaultX = 0f, float defaultY = 0f, bool optional = true) : base(label, optional)
-        {
-            _defaultValue = new Vector2(defaultX, defaultY);
-        }
-
-        public override object DefaultValue => _defaultValue;
-        private Vector2 _defaultValue = Vector2.zero;
+        public Vector2ParameterAttribute(string label, float defaultX = 0f, float defaultY = 0f, bool optional = true) : base(label, new Vector2(defaultX, defaultY), optional) { }
 
         public override object ParseParameterValue(string parameter)
         {

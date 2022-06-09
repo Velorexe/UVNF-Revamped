@@ -1,3 +1,3 @@
 @say "Wow, this is really working!?" name:"Me"
 @say "Yes." name:"Compiler" waitInput:false
-@char "Uvie" pose:"Explaining"
+@char "Uvie" pose:"Explaining" mirrored:true

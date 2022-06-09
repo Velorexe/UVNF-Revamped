@@ -6,9 +6,7 @@ namespace UVNF.Core.Entities.ScriptLines
     [AttributeUsage(AttributeTargets.Field)]
     public class IntParameterAttribute : ScriptLineParameterAttribute
     {
-        public IntParameterAttribute(string label, bool optional = true) : base(label, optional) { }
-
-        public override object DefaultValue => default(int);
+        public IntParameterAttribute(string label, int defaultValue = 0, bool optional = true) : base(label, defaultValue, optional) { }
 
         public override object ParseParameterValue(string parameter)
         {

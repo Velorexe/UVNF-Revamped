@@ -4,9 +4,7 @@ namespace UVNF.Core.Entities.ScriptLines
 {
     public class BooleanParameter : ScriptLineParameterAttribute
     {
-        public BooleanParameter(string label, bool optional = true) : base(label, optional) { }
-
-        public override object DefaultValue => true;
+        public BooleanParameter(string label, bool defaultValue = false, bool optional = true) : base(label, defaultValue, optional) { }
 
         public override object ParseParameterValue(string parameter)
         {

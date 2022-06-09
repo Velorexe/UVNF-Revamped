@@ -5,7 +5,7 @@ namespace UVNF.Core.Entities.ScriptLines
 {
     public class EnumParameterAttribute : ScriptLineParameterAttribute
     {
-        public EnumParameterAttribute(string label, Type enumType, bool optional = true) : base(label, optional)
+        public EnumParameterAttribute(string label, Type enumType, object defaultValue, bool optional = true) : base(label, defaultValue, optional)
         {
             if (enumType.IsEnum)
                 EnumType = enumType;
@@ -14,8 +14,6 @@ namespace UVNF.Core.Entities.ScriptLines
         }
 
         public readonly Type EnumType;
-
-        public override object DefaultValue => Activator.CreateInstance(EnumType);
 
         public override object ParseParameterValue(string parameter)
         {

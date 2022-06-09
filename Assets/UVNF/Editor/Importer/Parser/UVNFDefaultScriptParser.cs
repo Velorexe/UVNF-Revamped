@@ -12,11 +12,11 @@ namespace UVNF.Editor.Importer.Parser
     /// <summary>
     /// The default UVNF Script Parser
     /// </summary>
-    public class UVNFScriptParser : IUVNFScriptParser
+    public class UVNFDefaultScriptParser : IUVNFScriptParser
     {
         private UVNFScriptLine[] _scriptLineTypes = new UVNFScriptLine[0];
 
-        public UVNFScriptParser()
+        public UVNFDefaultScriptParser()
         {
             _scriptLineTypes = AssemblyHelpers.GetEnumerableOfType<UVNFScriptLine>();
         }

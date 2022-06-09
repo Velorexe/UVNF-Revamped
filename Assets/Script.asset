@@ -38,3 +38,4 @@ MonoBehaviour:
         _characterPose: Explaining
         _characterPosition: {x: 0, y: 0}
         _characterScale: {x: 1, y: 1}
+        _mirrored: 1

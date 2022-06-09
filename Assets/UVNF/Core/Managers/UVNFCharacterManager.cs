@@ -35,7 +35,6 @@ namespace UVNF.Core.Canvas
         /// </summary>
         /// <param name="characterName"></param>
         /// <param name="screenPositionPercentage"></param>
-        /// <returns></returns>
         public async UniTask AddCharacter(string characterName, string pose, Vector2 position, Vector2 scale)
         {
             GameObject characterObject = _cachedCharacters.FirstOrDefault(x => x.GetComponent<OnScreenCharacter>().Name == characterName);
@@ -48,7 +47,7 @@ namespace UVNF.Core.Canvas
                     Debug.LogWarning("Character does not contain any poses.");
 
                 RectTransform transform = Instantiate(character.gameObject, _characterCanvas).GetComponent<RectTransform>();
-                transform.localPosition = new Vector2(position.x * _canvasSize.x / 2f, position.y * _canvasSize.y);
+                transform.anchoredPosition = new Vector2(position.x * _canvasSize.x / 2f, position.y * _canvasSize.y);
 
                 Vector3 cS = transform.localScale;
                 transform.localScale = new Vector3(scale.x * cS.x, scale.y * cS.y, cS.z);
