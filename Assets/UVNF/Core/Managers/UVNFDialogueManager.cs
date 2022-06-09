@@ -26,19 +26,26 @@ namespace UVNF.Core
 
         public async UniTask Say(string characterName, string dialogue, bool waitForInput)
         {
-            bool confirmedInput = false;
+            if (waitForInput)
+            {
+                bool confirmedInput = false;
 
-            void InputHandler(InputAction.CallbackContext ctx) => confirmedInput = true;
-            _inputManager.OnConfirmDown += InputHandler;
+                void InputHandler(InputAction.CallbackContext ctx) => confirmedInput = true;
+                _inputManager.OnConfirmDown += InputHandler;
 
-            _namePrinter.SetText(characterName);
-            _dialoguePrinter.SetText(dialogue);
+                _namePrinter.SetText(characterName);
+                _dialoguePrinter.SetText(dialogue);
 
-            while (waitForInput && !confirmedInput)
-                await UniTask.Yield();
+                while (waitForInput && !confirmedInput)
+                    await UniTask.Yield();
 
-            _inputManager.OnConfirmDown -= InputHandler;
-
+                _inputManager.OnConfirmDown -= InputHandler;
+            }
+            else
+            {
+                _namePrinter.SetText(characterName);
+                _dialoguePrinter.SetText(dialogue);
+            }
             await UniTask.CompletedTask;
         }
     }

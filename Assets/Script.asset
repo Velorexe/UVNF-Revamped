@@ -30,7 +30,7 @@ MonoBehaviour:
       data:
         _dialogue: Yes.
         _characterName: Compiler
-        _waitForInput: 1
+        _waitForInput: 0
     00000002:
       type: {class: CharacterScriptLine, ns: UVNF.Core.Entities.ScriptLines, asm: Assembly-CSharp}
       data:
