@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using Cysharp.Threading.Tasks;
 using UnityEngine.InputSystem;
+using System.Threading;
+using System;
 
 namespace UVNF.Core
 {
@@ -15,13 +17,19 @@ namespace UVNF.Core
         [SerializeField]
         private TextMeshProUGUI _dialoguePrinter;
 
-        private event _confirm _onConfirm;
-        private delegate void _confirm();
+        private UVNFInputManager _inputManager;
+
+        public async override UniTask Init(UVNFGameManager gameManager, CancellationToken token)
+        {
+            _inputManager = await gameManager.GetManager<UVNFInputManager>();
+        }
 
         public async UniTask Say(string characterName, string dialogue, bool waitForInput)
         {
             bool confirmedInput = false;
-            _onConfirm += () => confirmedInput = true;
+
+            void InputHandler(InputAction.CallbackContext ctx) => confirmedInput = true;
+            _inputManager.OnConfirmDown += InputHandler;
 
             _namePrinter.SetText(characterName);
             _dialoguePrinter.SetText(dialogue);
@@ -29,9 +37,8 @@ namespace UVNF.Core
             while (waitForInput && !confirmedInput)
                 await UniTask.Yield();
 
-            Debug.Log("Confirmed");
+            _inputManager.OnConfirmDown -= InputHandler;
 
-            _onConfirm = null;
             await UniTask.CompletedTask;
         }
     }

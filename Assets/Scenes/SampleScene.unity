@@ -158,6 +158,7 @@ MonoBehaviour:
   _managerPrefabs:
   - {fileID: 7997798180233516202, guid: 367118260da5c5247afa2c92d4a0751d, type: 3}
   - {fileID: 1861147469908182657, guid: a1dc20a342b3d2d449999046df69ed77, type: 3}
+  - {fileID: 1317243567398429889, guid: f9b7e9d78c4d6f84da3d49031d37c13f, type: 3}
   Resources: {fileID: 225532908}
 --- !u!4 &225532907
 Transform:

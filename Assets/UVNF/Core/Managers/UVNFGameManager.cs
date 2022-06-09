@@ -33,6 +33,26 @@ namespace UVNF.Core
         private Dictionary<Type, UVNFManager[]> _cachedInjection = new Dictionary<Type, UVNFManager[]>();
         private Type[] _cachedTypes = new Type[0];
 
+        public async UniTask<T> GetManager<T>() where T : UVNFManager
+        {
+            Type managerType = typeof(T);
+            UVNFManager manager = manager = _managers.FirstOrDefault(x => x.GetType() == managerType);
+
+            if (manager == null)
+            {
+                manager = _managerPrefabs.FirstOrDefault(x => x.GetType() == managerType);
+
+                GameObject managerObject = Instantiate(manager.gameObject, _uvnfCanvas);
+                manager = (UVNFManager)managerObject.GetComponent(managerType);
+
+                await manager.Init(this, CancellationToken.None);
+
+                _managers.Add(manager);
+            }
+
+            return (T)manager;
+        }
+
         private async void Awake()
         {
             await SyncInjection();
