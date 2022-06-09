@@ -418,7 +418,6 @@ namespace UVNF.Editor.Importer
         public override void OnDisable()
         {
             base.OnDisable();
-
             File.WriteAllText(_script.AssetPath, _parser.ExportLines(_script));
         }
 

@@ -59,7 +59,7 @@ namespace UVNF.Editor.Importer.Parser
                             else
                             {
                                 valueCombo[i - 1].Item2 = disectedLine[i].Substring(0, splitIndex);
-                                valueCombo[i].Item1 = disectedLine[i].Substring(splitIndex, disectedLine[i].Length - splitIndex);
+                                valueCombo[i].Item1 = disectedLine[i].Substring(splitIndex + 1, disectedLine[i].Length - splitIndex - 1);
                             }
                         }
                     }
