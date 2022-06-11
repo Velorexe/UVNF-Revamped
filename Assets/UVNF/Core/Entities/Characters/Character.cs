@@ -49,14 +49,5 @@ namespace UVNF.Core.Entities.Characters
             CharacterName = newCharacterName;
         }
 #endif
-
-        public Sprite GetPose(string poseName)
-        {
-            //if (Poses.ContainsKey(poseName))
-            //    return Poses[poseName];
-            ////TODO: Convert to async
-            //return Poses.First(x => x.Value != null).Value;
-            return null;
-        }
     }
 }

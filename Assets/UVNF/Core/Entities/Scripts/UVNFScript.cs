@@ -12,17 +12,14 @@ namespace UVNF.Core.Entities
     /// </summary>
     public class UVNFScript : ScriptableObject
     {
+        public string Name = "Default Title";
+
         /// <summary>
         /// The Compiled UVNFScriptLines from the raw .uvnf file
         /// </summary>
         public List<UVNFScriptLine> Lines => _lines;
         [SerializeReference]
         private List<UVNFScriptLine> _lines = new List<UVNFScriptLine>();
-
-        /// <summary>
-        /// Indexes and titles for Chapters
-        /// </summary>
-        public Dictionary<int, string> Chapters { get; } = new Dictionary<int, string>();
 
         /// <summary>
         /// The path of the original .uvnf file
@@ -46,6 +43,15 @@ namespace UVNF.Core.Entities
         public void AddLine(UVNFScriptLine line)
         {
             _lines.Add(line);
+        }
+
+        /// <summary>
+        /// Replaces all UVNFScriptLines with the given List
+        /// </summary>
+        /// <param name="lines">The List from which the lines should be copied</param>
+        public void ReplaceLines(List<UVNFScriptLine> lines)
+        {
+            _lines = new List<UVNFScriptLine>(lines);
         }
 
         /// <summary>

@@ -19,8 +19,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 53d6612fc00e9c84d992460648aa7384, type: 3}
   _spriteRect:
     serializedVersion: 2
-    x: -20.999985
-    y: 1308.3333
+    x: 247
+    y: 1116.3333
     width: 113
     height: 100
   IsVisible: 1
@@ -39,6 +39,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poseName: Excited
   _poseSprite: {fileID: 21300000, guid: f985391825a391d428a36d2ea27cc6bd, type: 3}
+  SizeOffset: {x: 0.5, y: 0.5}
+  PositionOffset: {x: 0, y: 881.9}
   _characterParts:
   - {fileID: 1057812628004250672}
   - {fileID: -8125834245936952161}
@@ -104,10 +106,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 62ececa040398814c8fcbe31e3fce69b, type: 3}
   _spriteRect:
     serializedVersion: 2
-    x: -4
-    y: 1414
-    width: 279
-    height: 144
+    x: 330
+    y: 1193
+    width: 245
+    height: 133
   IsVisible: 1
   SpriteToShow: 0
 --- !u!114 &4415008744510443838
@@ -149,6 +151,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _poseName: Uninterested
   _poseSprite: {fileID: 21300000, guid: 8189c0c92cf2ae14c9a94047debd16bc, type: 3}
+  SizeOffset: {x: 1, y: 1}
+  PositionOffset: {x: 0, y: 0}
   _characterParts:
   - {fileID: -3227140852108958728}
   - {fileID: 4415008744510443838}

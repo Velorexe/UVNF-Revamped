@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5048581b5190de64fbc9f6ab5c783aa3, type: 3}
-  m_Name: Script
+  m_Name: Script-Compiled
   m_EditorClassIdentifier: 
+  Name: Default Title
   _lines:
   - id: 0
   - id: 1

@@ -106,11 +106,15 @@ namespace UVNF.Editor.Windows
                 drawRect.x += _imageOffset.x;
                 drawRect.y += _imageOffset.y;
 
+                drawRect.position += _focusedPose.PositionOffset;
+
                 drawRect.width *= _zoomAmount;
                 drawRect.height *= _zoomAmount;
 
+                drawRect.size *= _focusedPose.SizeOffset;
+
                 DrawBounds(drawRect, Color.white, 1f * _zoomAmount);
-                GUI.DrawTexture(drawRect, _focusedPose.PoseSprite.texture, ScaleMode.ScaleToFit);
+                GUI.DrawTexture(drawRect, _focusedPose.PoseSprite.texture, ScaleMode.StretchToFill);
 
                 if (_focusedPose.CharacterParts.Length > 0)
                 {
@@ -130,6 +134,8 @@ namespace UVNF.Editor.Windows
                             fixedPosition.x += drawRect.x;
                             fixedPosition.y += drawRect.y;
 
+                            fixedPosition *= _focusedPose.SizeOffset;
+
                             fixedPosition.x -= part.SpriteRect.width / 2f;
                             fixedPosition.y -= part.SpriteRect.height / 2f;
 
@@ -137,6 +143,8 @@ namespace UVNF.Editor.Windows
 
                             partRect.width *= _zoomAmount;
                             partRect.height *= _zoomAmount;
+
+                            partRect.size *= _focusedPose.SizeOffset;
 
                             GUI.DrawTexture(partRect, part.PoseSprites[_selectedSprite].texture, ScaleMode.StretchToFill);
 
@@ -231,6 +239,25 @@ namespace UVNF.Editor.Windows
                 #region Leftside Menu
                 GUILayout.BeginVertical("box", GUILayout.MaxWidth(200f), GUILayout.MinHeight(position.height));
                 {
+                    GUILayout.BeginVertical();
+                    {
+                        GUILayout.Label("Settings", EditorStyles.boldLabel);
+                        GUILayout.Label($"The blue border shows an {_screenSizeRect.width} x {_screenSizeRect.height} area.\nTry to fit your character until it fits the right size.");
+
+                        GUILayout.Space(EditorGUIUtility.singleLineHeight);
+
+                        _screenSizeRect.size = EditorGUILayout.Vector2Field("Reference Size", _screenSizeRect.size);
+
+                        GUILayout.Space(EditorGUIUtility.singleLineHeight);
+
+                        _focusedPose.PositionOffset = EditorGUILayout.Vector2Field("Position Offset", _focusedPose.PositionOffset);
+                        _focusedPose.SizeOffset = EditorGUILayout.Vector2Field("Size Offset", _focusedPose.SizeOffset);
+                    }
+                    GUILayout.EndVertical();
+
+                    GUILayout.Space(20f);
+
+                    #region Parts
                     GUILayout.BeginHorizontal();
                     {
                         GUILayout.Label("Parts", EditorStyles.boldLabel);
@@ -274,6 +301,7 @@ namespace UVNF.Editor.Windows
                         }
                         GUILayout.EndScrollView();
                     }
+                    #endregion
                 }
                 GUILayout.EndVertical();
                 #endregion

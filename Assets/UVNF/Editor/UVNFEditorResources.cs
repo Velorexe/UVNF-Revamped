@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
@@ -9,13 +10,10 @@ public static class UVNFEditorResources
 {
     private static AddressableAssetSettings _settings = AddressableAssetSettingsDefaultObject.Settings;
 
-    public static async UniTask<bool> RemoveResource<T>(string resourceAdres) where T : Object
+    public static async UniTask<bool> RemoveResource<T>(string resourceAddress) where T : UnityEngine.Object
     {
-        if (_settings == null)
-            _settings = AddressableAssetSettingsDefaultObject.Settings;
-
-        AddressableAssetGroup group = _settings.FindGroup(x => x.Name == "UVNF");
-        if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(await Addressables.LoadAssetAsync<T>(resourceAdres), out string guid, out long localId))
+        AddressableAssetGroup group = AddressableAssetSettingsDefaultObject.Settings.FindGroup(x => x.Name == "UVNF");
+        if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(await Addressables.LoadAssetAsync<T>(resourceAddress), out string guid, out long localId))
         {
             group.RemoveAssetEntry(group.GetAssetEntry(guid));
             return true;
@@ -23,16 +21,27 @@ public static class UVNFEditorResources
         return false;
     }
 
-    public static bool AddResource(string assetGuid, string resourceAdres)
+    public static bool AddResource(string assetGuid, string resourceAddress, string label)
     {
-        if (_settings == null)
-            _settings = AddressableAssetSettingsDefaultObject.Settings;
+        AddressableAssetGroup group = AddressableAssetSettingsDefaultObject.Settings.FindGroup(x => x.Name == "UVNF");
+        AddressableAssetEntry entry = AddressableAssetSettingsDefaultObject.Settings.CreateOrMoveEntry(assetGuid, group);
 
-        AddressableAssetGroup group = _settings.FindGroup(x => x.Name == "UVNF");
-        AddressableAssetEntry entry = _settings.CreateOrMoveEntry(assetGuid, group);
-
-        entry.address = resourceAdres;
+        entry.address = resourceAddress;
+        entry.labels.Add(label);
 
         return true;
+    }
+
+    public static async UniTask<bool> ResourceExists<T>(string assetGuid) where T : UnityEngine.Object
+    {
+        try
+        {
+            if (await Addressables.LoadAssetAsync<T>(assetGuid) != null)
+            {
+                return true;
+            }
+            return false;
+        }
+        catch (Exception) { return false; }
     }
 }

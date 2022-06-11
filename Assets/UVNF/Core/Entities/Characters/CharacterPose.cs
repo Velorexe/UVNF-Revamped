@@ -26,6 +26,9 @@ namespace UVNF.Core.Entities.Characters
         [SerializeField]
         private Sprite _poseSprite;
 
+        public Vector2 SizeOffset = Vector2.one;
+        public Vector2 PositionOffset = Vector2.one;
+
         [SerializeField]
         private List<CharacterPart> _characterParts = new List<CharacterPart>();
 

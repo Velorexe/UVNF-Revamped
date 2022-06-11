@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 using UVNF.Core.Entities;
+using System.Linq;
 
 namespace UVNF.Editor.Importer
 {
@@ -12,7 +13,14 @@ namespace UVNF.Editor.Importer
     {
         public override void OnImportAsset(UnityEditor.AssetImporters.AssetImportContext ctx)
         {
-            //Add itself to the UVNF Script Manager
+            GUID guid = AssetDatabase.GUIDFromAssetPath(ctx.assetPath);
+            List<string> labels = AssetDatabase.GetLabels(guid).ToList();
+
+            if (!labels.Contains("UVNFScript"))
+            {
+                labels.Add("UVNFScript");
+                AssetDatabase.SetLabels(ctx.mainObject, labels.ToArray());
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 fileFormatVersion: 2
 guid: 5949527e295184a4e8bcbd397515f526
+labels:
+- UVNFScript
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}

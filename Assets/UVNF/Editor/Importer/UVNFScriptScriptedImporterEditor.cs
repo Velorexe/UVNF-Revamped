@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -390,6 +391,15 @@ namespace UVNF.Editor.Importer
 
             _watcher = new FileSystemWatcher(Path.Combine(Application.dataPath, Path.GetPathRoot(path)));
             _watcher.Changed += ParseLinesToScript;
+
+            GUID guid = AssetDatabase.GUIDFromAssetPath(path);
+            List<string> labels = AssetDatabase.GetLabels(guid).ToList();
+
+            if (!labels.Contains("UVNFScript"))
+            {
+                labels.Add("UVNFScript");
+                AssetDatabase.SetLabels(target, labels.ToArray());
+            }
         }
 
         private void ParseLinesToScript(string path)
